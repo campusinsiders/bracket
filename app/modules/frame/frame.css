@@ -1,0 +1,17 @@
+/*
+ * Frame
+ */
+
+.frame {
+	display: flex;
+	flex-direction: column;
+
+	@media (--width-large) {
+		display: block;
+		height: auto;
+	}
+}
+
+.frame--scrollLock {
+	overflow: hidden;
+}

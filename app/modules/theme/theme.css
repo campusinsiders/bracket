@@ -1,0 +1,45 @@
+/*
+ * Theme
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=latin-ext,vietnamese');
+
+:root {
+	--color-white: #fff;
+	--color-lightBlue: #50a4e9;
+	--color-lightGrey: #f8f8f8;
+	--color-red: #910f0f;
+	--color-slate: #212933;
+
+	--color-matchupHover: #fafafa;
+	--color-matchupInProgressBackground: color( var(--color-lightBlue) lightness(98%) );
+	--color-matchupInProgressBorder: color( var(--color-lightBlue) lightness(70%) );
+	--color-matchupInProgressDivider: color( var(--color-lightBlue) lightness(90%) );
+	--color-matchupInProgressShadow: color( var(--color-lightBlue) alpha(20%) );
+	--color-teamWinner: #ffd939;
+	--color-teamWinnerBackground: color( var(--color-teamWinner) lightness(96%) );
+	--color-teamWinnerBackgroundHover: color( var(--color-teamWinner) lightness(93%) );
+	--color-teamWinnerShadow: color( var(--color-teamWinner) alpha(20%) );
+	--color-teamWinnerBorder: color( var(--color-teamWinner) lightness(70%) );
+	--color-teamWinnerBorderHover: color( var(--color-teamWinner) lightness(50%) );
+	--color-teamLoserFade: .8;
+	--color-matchupBorder: #dfdfdf;
+	--color-matchupShadow: rgba(0,0,0,.03);
+	--color-roundConnector: color( var(--color-slate) alpha(8%) );
+
+	--size-matchupScale: .7;
+	--size-matchupBorder: .0625rem;
+	--size-roundOverlap: -3rem;
+	--size-roundTitleHeight: 2.1875rem;
+}
+
+@custom-media --width-large (min-width: 60em);
+@custom-media --width-xlarge (min-width: 80em);
+
+body {
+	font-family: "Montserrat";
+}
+
+strong {
+	font-weight: 500;
+}
