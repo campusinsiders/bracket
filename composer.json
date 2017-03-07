@@ -1,0 +1,19 @@
+{
+    "name": "lift/bracket",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Anthony Garand",
+            "email": "garand@liftux.com"
+        },
+        {
+            "name": "Christian Chung",
+            "email": "christian@liftux.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {},
+    "autoload": {
+        "classmap" : ["src/"]
+    }
+}
