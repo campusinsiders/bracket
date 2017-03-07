@@ -8,7 +8,13 @@
 	</head>
 	<body class="frame">
 		<div class="header">
+			<div class="header__section header__section--left">
+				<a class="header__link header__link--site" href="/">Back to CampusInsiders.com</a>
+			</div>
 			<a class="header__logo" href="/"><img src="https://campusinsiders.com/wp-content/themes/stadium/vendor/lift/playbook/dist/assets/components/common/assets/campus-insiders-logo.svg"></a>
+			<div class="header__section header__section--right">
+				<a class="header__link header__link--news" href="/">NCAA Tourament News</a>
+			</div>
 		</div>
 		<div class="bracket">
 			<div class="regionToggle">
@@ -19,6 +25,23 @@
 				<div data-region="finalFour" class="regionToggle__region">Final 4</div>
 			</div>
 			<div class="rounds rounds--displayRegionSouth">
+				<div class="sponsor">
+					<div class="sponsor__6860Graphic">
+						<img src="/assets/6860.svg">
+					</div>
+					<div class="sponsor__yahoo">
+						<a href="http://yahoo.com/tourney" target="_blank">
+							<img src="/assets/yahoo-sports.svg">
+						</a>
+					</div>
+					<div class="sponsor__6860Content">
+						<div class="sponsor__6860ContentContainer">
+							<span class="sponsor__6860Content--short">Fill out your bracket now at </span>
+							<span class="sponsor__6860Content--long">Get into the madness with Tourney Pick'em from Yahoo Sports. Fill out your bracket now at </span>
+							<a href="http://yahoo.com/tourney" target="_blank">http://yahoo.com/tourney</a>
+						</div>
+					</div>
+				</div>
 				<div class="round round--firstFour">
 					<div class="roundTitle">
 						<div class="roundTitle__name">First Four</div>
@@ -75,10 +98,10 @@
 						<div class="roundTitle__name">National Championship</div>
 						<div class="roundTitle__dates">April 4</div>
 					</div>
+					<div class="matchups" data-matchups="1"></div>
 					<div class="promo">
 						<img src="https://upload.wikimedia.org/wikipedia/en/3/3d/2017_NCAA_Men%27s_Final_Four_logo.svg">
 					</div>
-					<div class="matchups" data-matchups="1"></div>
 				</div>
 				<div class="roundDividers roundDividers--right" data-dividers="0"></div>
 				<div class="round round--fifthRight">
@@ -126,7 +149,7 @@
 		</div>
 		<div class="modal">
 			<div class="modal__content">
-				<div class="modal__close">Return to Bracket</div>
+				<div class="modal__close"><img src="/assets/arrow-left.svg">Return to Bracket</div>
 				<div class="modal__matchup">
 					<div class="modal__matchupTeam">
 						<span class="modal__matchupTeamName"><span class="modal__matchupTeamSeed">12</span>Louisville</span>
@@ -140,8 +163,19 @@
 				</div>
 				<div class="modal__matchupContent">
 					<div class="modal__matchupSponsor">
-						<span>Sponsored by</span>
-						<img src="/assets/yahoo.svg">
+						<div class="modal__matchupSponsor__6860Graphic">
+							<img src="/assets/6860.svg">
+						</div>
+						<div class="modal__matchupSponsor__yahoo">
+							<a href="http://yahoo.com/tourney" target="_blank">
+								<img src="/assets/yahoo-sports.svg">
+							</a>
+						</div>
+						<div class="modal__matchupSponsor__6860Content">
+							<div class="modal__matchupSponsor__6860ContentContainer">
+								Fill out your bracket now at <a href="http://yahoo.com/tourney" target="_blank">http://yahoo.com/tourney</a>
+							</div>
+						</div>
 					</div>
 					<div class="modal__videos">
 						<div class="modal__video modal__video--matchupVideo">
