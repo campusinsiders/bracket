@@ -392,7 +392,7 @@ html {
 	& .matchups {
 		flex-direction: row;
 		flex-wrap: wrap;
-		
+
 		@media (--width-large) {
 			flex-direction: column;
 			flex-wrap: nowrap;
@@ -401,14 +401,14 @@ html {
 
 	& .matchup {
 		flex-basis: calc( 50% - .25rem );
-		
+
 		@media (--width-large) {
 			flex-basis: auto;
 		}
 
 		&:nth-child(even) {
 			margin-left: .5rem;
-		
+
 			@media (--width-large) {
 				margin-left: 0;
 			}
@@ -907,7 +907,7 @@ html {
 	align-items: center;
 
 	@media (--width-large) {
-		display: none;
+		//display: none;
 	}
 
 	& img {
@@ -982,7 +982,7 @@ html {
 		margin-left: 0;
 		margin-right: .6em;
 	}
-	
+
 	& img {
 		max-height: 1.4em;
 		display: block;
