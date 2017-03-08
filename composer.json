@@ -12,8 +12,5 @@
         }
     ],
     "require": {},
-    "require-dev": {},
-    "autoload": {
-        "classmap" : ["src/"]
-    }
+    "require-dev": {}
 }
