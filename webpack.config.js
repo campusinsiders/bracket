@@ -3,7 +3,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const proxyHost = 'http://0.0.0.0:';
-const proxyPort = process.env.DEV_PORT;
+const proxyPort = process.env.DEV_PORT || '';
 
 module.exports = {
 	context: path.resolve(__dirname, 'app'),
