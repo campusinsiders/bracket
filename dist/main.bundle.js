@@ -17367,8 +17367,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var DividerInterface = function DividerInterface(data) {
 	_classCallCheck(this, DividerInterface);
 
-	this.uid = data.uid;
-	this.count = data.count || 0;
+	Object.assign(this, { count: 0 }, data);
 	this.position = 'string' === typeof data.position ? data.position : 'left';
 };
 
@@ -17559,13 +17558,18 @@ var RoundInterface = (_class = function () {
 
 		_initDefineProp(this, 'matchStore', _descriptor7, this);
 
-		this.uid = Number.isInteger(data.uid) ? data.uid : uid || Math.random() * 100;
-		this.matches = data.matches;
-		this.ordinal = data.ordinal || '';
-		this.position = data.position || "";
-		this.matchStore = data.matchStore ? new __WEBPACK_IMPORTED_MODULE_1__stores_matchStore__["a" /* default */](data.matchStore) : this.getDefaultMatchStore();
-		this.title = data.title || this.ordinal + ' round';
-		this.dates = this.dates || '';
+		var defaults = {
+			uid: Math.random() * 100,
+			ordinal: '',
+			title: this.ordinal + ' round',
+			subtitle: '',
+			promo: '',
+			sponsor: '',
+			sponsorLink: '',
+			editting: false,
+			matchStore: this.getDefaultMatchStore()
+		};
+		Object.assign(this, defaults, data);
 	}
 
 	_createClass(RoundInterface, [{

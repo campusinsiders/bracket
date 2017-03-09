@@ -889,7 +889,8 @@ var RoundSectionControls = function (_SectionControls) {
 				label: label,
 				settings: { 'default': this.setting('title') },
 				type: 'text',
-				active: true
+				active: true,
+				priority: 10
 			};
 			var constructor = this.api.controlConstructor[controlData.type];
 			this.controls[controlId] = new this.api.Control(controlId, {
@@ -924,7 +925,8 @@ var RoundSectionControls = function (_SectionControls) {
 				label: label,
 				settings: { 'default': this.setting('subtitle') },
 				type: 'text',
-				active: true
+				active: true,
+				priority: 20
 			};
 			this.controls[controlId] = new this.api.Control(controlId, {
 				params: controlData,
@@ -964,7 +966,8 @@ var RoundSectionControls = function (_SectionControls) {
 				},
 				canUpload: true,
 				type: 'upload',
-				active: true
+				active: true,
+				priority: 50
 			};
 			var constructor = this.api.controlConstructor[controlData.type];
 			this.controls[controlId] = new constructor(controlId, {
@@ -1005,7 +1008,8 @@ var RoundSectionControls = function (_SectionControls) {
 				},
 				canUpload: true,
 				type: 'upload',
-				active: true
+				active: true,
+				priority: 100
 			};
 			var constructor = this.api.controlConstructor[controlData.type];
 			this.controls[controlId] = new constructor(controlId, {
@@ -1040,7 +1044,8 @@ var RoundSectionControls = function (_SectionControls) {
 				label: label,
 				settings: { 'default': this.setting('sponsorLink') },
 				type: 'text',
-				active: true
+				active: true,
+				priority: 120
 			};
 			var constructor = this.api.controlConstructor[controlData.type];
 			this.controls[controlId] = new this.api.Control(controlId, {
