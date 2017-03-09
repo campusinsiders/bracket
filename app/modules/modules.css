@@ -51,14 +51,6 @@ html {
 	border-bottom: .15em solid color( var(--color-slate) lightness(90%) );
 }
 
-.header__section {
-	display: none;
-
-	@media (--width-large) {
-		display: block;
-	}
-}
-
 .header__section--left {
 	text-align: left;
 }

@@ -82,3 +82,11 @@ body.debug:before {
 		background-position: center;
 	}
 }
+
+.__media--large {
+	display: none;
+
+	@media (--width-large) {
+		display: inline;
+	}
+}
