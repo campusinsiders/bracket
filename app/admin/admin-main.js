@@ -10,7 +10,6 @@ wp.customize.bind( 'ready', function() {
 		wp.customize('wp_bracket_data').get = () => ( wp.customize.previewer.targetWindow().appStore.stringified );
 	});
 
-
 	// Listen for init on the bracket.
 	window.addEventListener( "message", (event) => {
 		let parsedData = JSON.parse( event.data );

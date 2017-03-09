@@ -1,7 +1,5 @@
 const modules = require('./modules/modules.css');
 
-
-
 if ( document.querySelectorAll('body.react').length ) {
 	// Require the Bracket.
 	require( './Bracket');

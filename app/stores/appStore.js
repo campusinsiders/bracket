@@ -67,6 +67,7 @@ export default class AppStore {
 		this.roundStore = roundStore ? new RoundStore( roundStore ) : this.defaultRoundStore();
 		this.editor = new Editor;
 		this.postsStore = new PostsStore;
+		this.postsStore.bootstrap();
 		this.transmit('init').setupReceiver().setupTransmitter();
 	}
 

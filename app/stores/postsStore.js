@@ -13,6 +13,17 @@ export default class PostsStore {
 		}
 	}
 
+	bootstrap() {
+		if ( window.wp_bracket && wp_bracket.hasOwnProperty('bootstrapPosts') ) {
+			wp_bracket.bootstrapPosts.map( (post) => {
+				const boostrappedPost = { id: post.id, content: post.content, title: post.title }
+				this.posts.push( boostrappedPost );
+			} );
+			return true;
+		}
+		return false;
+	}
+
 	async getPost( id ) {
 		id = parseInt(id);
 		let posts = this.posts.filter( (post) => id === post.id );
@@ -25,6 +36,9 @@ export default class PostsStore {
 
 	async fetchPost( id ) {
 		id = parseInt( id );
+		if ( ! id ) {
+			return void 0;
+		}
 		this.fetching = true;
 		let post;
 		await fetch( this.postEndpoint( id ) )

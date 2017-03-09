@@ -5,19 +5,16 @@ import { inject, observer } from 'mobx-react';
 export default class ModalArticleComponent extends Component {
 	constructor( props ) {
 		super( props );
-		this.content = '';
-
-	}
-
-	async componentWillMount() {
-		await this.props.store.postsStore.getPost( this.props.articleId )
-			.then( (post) => this.content = post.content.rendered );
-		this.html = { __html: this.content }
+		console.log(this.props);
 	}
 
 	render() {
+		if ( void 0 === this.article || ! this.article.hasOwnPropert('content') || '' === this.article.content ) {
+			return false;
+		}
+
 		return(
-			<div className="modal__matchupArticle" dangerouslySetInnerHTML={this.html}/>
+			<div className="modal__matchupArticle" dangerouslySetInnerHTML={content}/>
 		);
 	}
 }

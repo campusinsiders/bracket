@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
 
+import { bracketUrl } from '../utils';
+
 @inject("store") @observer
 export default class MatchupModalComponent extends Component {
 
@@ -82,10 +84,9 @@ export default class MatchupModalComponent extends Component {
 			return ( <div className="modal"/> );
 		}
 
-		const { article } = this.matchup;
-		const html = {
-			__html: ( void 0 !== article && article.hasOwnProperty('content') )
-				? article.content
+		let html = {
+			__html: ( void 0 !== this.matchup.article && this.matchup.article.hasOwnProperty('content') )
+				? this.matchup.article.content
 				: ( this.matchup.loading ) ? '<p>Loading Article</p>' : ''
 			};
 		return (
@@ -116,7 +117,21 @@ export default class MatchupModalComponent extends Component {
 						</div>
 					</div>
 					<div className="modal__matchupContent">
-
+						<div className="modal__matchupSponsor">
+							<div className="modal__matchupSponsor__6860Graphic">
+								<img src={ bracketUrl('/app/assets/6860.svg')}/>
+							</div>
+							<div className="modal__matchupSponsor__yahoo">
+								<a href="http://yahoo.com/tourney" target="_blank">
+									<img src={bracketUrl('/app/assets/yahoo-sports.svg')}/>
+								</a>
+							</div>
+							<div className="modal__matchupSponsor__6860Content">
+								<div className="modal__matchupSponsor__6860ContentContainer">
+									Fill out your bracket now at <a href="http://yahoo.com/tourney" target="_blank">http://yahoo.com/tourney</a>
+								</div>
+							</div>
+						</div>
 						<div className="modal__videos">
 							<div className="modal__video modal__video--matchupVideo">
 								<div><iframe width="560" height="315" src={this.matchup.mainVideo} frameBorder="0" allowFullScreen></iframe></div>
