@@ -32,13 +32,18 @@ export default class RoundInterface {
 	}
 
 	constructor( data, uid ) {
-		this.uid = Number.isInteger( data.uid ) ? data.uid : ( uid || Math.random() * 100 );
-		this.matches = data.matches;
-		this.ordinal = data.ordinal || '';
-		this.position = data.position || "";
-		this.matchStore = data.matchStore ? new MatchStore( data.matchStore ) : this.getDefaultMatchStore();
-		this.title = data.title || `${this.ordinal} round`
-		this.dates = this.dates || '';
+		const defaults = {
+			uid: Math.random() * 100,
+			ordinal: '',
+			title: `${this.ordinal} round`,
+			subtitle: '',
+			promo: '',
+			sponsor: '',
+			sponsorLink: '',
+			editting: false,
+			matchStore: this.getDefaultMatchStore()
+		};
+		Object.assign( this, defaults, data );
 	}
 
 	getDefaultMatchStore() {

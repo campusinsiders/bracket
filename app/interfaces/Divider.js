@@ -7,8 +7,7 @@ export default class DividerInterface {
 	position:String;
 
 	constructor( data ) {
-		this.uid = data.uid;
-		this.count = data.count || 0;
+		Object.assign( this, { count: 0 }, data );
 		this.position = 'string' === typeof data.position ? data.position : 'left';
 	}
 }
