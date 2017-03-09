@@ -16800,6 +16800,7 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					__WEBPACK_IMPORTED_MODULE_1_react_router__["d" /* Link */],
 					{ className: 'modal__close', to: '/' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["a" /* bracketUrl */])('/app/assets/arrow-left.svg') }),
 					'Return to Bracket'
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

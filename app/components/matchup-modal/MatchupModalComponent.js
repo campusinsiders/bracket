@@ -91,7 +91,10 @@ export default class MatchupModalComponent extends Component {
 			};
 		return (
 			<div className="modal modal--visible">
-				<Link className="modal__close" to={'/'}>Return to Bracket</Link>
+				<Link className="modal__close" to={'/'}>
+					<img src={bracketUrl('/app/assets/arrow-left.svg')}/>
+					Return to Bracket
+				</Link>
 				<div className="modal__content">
 					<div className="modal__matchup">
 						<div className="modal__matchupTeam">
