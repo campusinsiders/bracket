@@ -90,8 +90,8 @@ export default class MatchupModalComponent extends Component {
 			};
 		return (
 			<div className="modal modal--visible">
+				<Link className="modal__close" to={'/'}>Return to Bracket</Link>
 				<div className="modal__content">
-					<Link className="modal__close" to={'/'}>Return to Bracket</Link>
 					<div className="modal__matchup">
 						<div className="modal__matchupTeam">
 							<span className="modal__matchupTeamName">

@@ -58,9 +58,9 @@ export default class RoundComponent extends Component {
 					<div className="roundTitle__name">{this.round.title}</div>
 					<div className="roundTitle__dates">{this.round.subtitle}</div>
 				</div>
-				{promoImage}
 				{quadrants}
 				<Matchups matchups={this.round.matchups} round={this.round}/>
+				{promoImage}
 			</div>
 		);
 	}
