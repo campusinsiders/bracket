@@ -16678,7 +16678,7 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 
 			if (this.matchup) {
 				this.props.store.setActiveMatchup(this.matchup);
-				if (!this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId) {
+				if (void 0 !== this.matchup.article && (!this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId)) {
 					postsStore.getPost(this.matchup.articleId).then(function (post) {
 						return _this2.matchup.article = post;
 					});
