@@ -1238,7 +1238,7 @@ function reaction(expression, effect, arg3) {
     var isScheduled = false;
     var nextValue;
     var r = new Reaction(opts.name, function () {
-        if (opts.delay < 1) {
+        if (firstTime || opts.delay < 1) {
             reactionRunner();
         } else if (!isScheduled) {
             isScheduled = true;
@@ -2499,7 +2499,7 @@ function deepEnhancer(v, _, name) {
     if (isObservable(v)) return v;
     if (Array.isArray(v)) return observable.array(v, name);
     if (isPlainObject(v)) return observable.object(v, name);
-    if (isES6Map(v)) return observable.shallowMap(v, name);
+    if (isES6Map(v)) return observable.map(v, name);
     return v;
 }
 function shallowEnhancer(v, _, name) {
@@ -2531,6 +2531,7 @@ function refStructEnhancer(v, oldValue, name) {
     if (deepEqual(v, oldValue)) return oldValue;
     return v;
 }
+var MAX_SPLICE_SIZE = 10000;
 var safariPrototypeSetterInheritanceBug = function () {
     var v = false;
     var p = {};
@@ -2585,7 +2586,12 @@ var ObservableArrayAdministration = function () {
     ObservableArrayAdministration.prototype.setArrayLength = function (newLength) {
         if (typeof newLength !== "number" || newLength < 0) throw new Error("[mobx.array] Out of range: " + newLength);
         var currentLength = this.values.length;
-        if (newLength === currentLength) return;else if (newLength > currentLength) this.spliceWithArray(currentLength, 0, new Array(newLength - currentLength));else this.spliceWithArray(newLength, currentLength - newLength);
+        if (newLength === currentLength) return;else if (newLength > currentLength) {
+            var newItems = new Array(newLength - currentLength);
+            for (var i = 0; i < newLength - currentLength; i++) {
+                newItems[i] = undefined;
+            }this.spliceWithArray(currentLength, 0, newItems);
+        } else this.spliceWithArray(newLength, currentLength - newLength);
     };
     ObservableArrayAdministration.prototype.updateArrayLength = function (oldLength, delta) {
         if (oldLength !== this.lastKnownLength) throw new Error("[mobx] Modification exception: the internal structure of an observable array was changed. Did you use peek() to change it?");
@@ -2616,9 +2622,18 @@ var ObservableArrayAdministration = function () {
         });
         var lengthDelta = newItems.length - deleteCount;
         this.updateArrayLength(length, lengthDelta);
-        var res = (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
+        var res = this.spliceItemsIntoValues(index, deleteCount, newItems);
         if (deleteCount !== 0 || newItems.length !== 0) this.notifyArraySplice(index, newItems, res);
         return res;
+    };
+    ObservableArrayAdministration.prototype.spliceItemsIntoValues = function (index, deleteCount, newItems) {
+        if (newItems.length < MAX_SPLICE_SIZE) {
+            return (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
+        } else {
+            var res = this.values.slice(index, index + deleteCount);
+            this.values = this.values.slice(0, index).concat(newItems, this.values.slice(index + deleteCount));
+            return res;
+        }
         var _a;
     };
     ObservableArrayAdministration.prototype.notifyArrayChildUpdate = function (index, newValue, oldValue) {
@@ -2737,6 +2752,9 @@ var ObservableArray = function (_super) {
         }
         return this.$mobx.spliceWithArray(index, deleteCount, newItems);
     };
+    ObservableArray.prototype.spliceWithArray = function (index, deleteCount, newItems) {
+        return this.$mobx.spliceWithArray(index, deleteCount, newItems);
+    };
     ObservableArray.prototype.push = function () {
         var items = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -2816,7 +2834,7 @@ var ObservableArray = function (_super) {
 declareIterator(ObservableArray.prototype, function () {
     return arrayAsIterator(this.slice());
 });
-makeNonEnumerable(ObservableArray.prototype, ["constructor", "intercept", "observe", "clear", "concat", "replace", "toJS", "toJSON", "peek", "find", "splice", "push", "pop", "shift", "unshift", "reverse", "sort", "remove", "move", "toString", "toLocaleString"]);
+makeNonEnumerable(ObservableArray.prototype, ["constructor", "intercept", "observe", "clear", "concat", "replace", "toJS", "toJSON", "peek", "find", "splice", "spliceWithArray", "push", "pop", "shift", "unshift", "reverse", "sort", "remove", "move", "toString", "toLocaleString"]);
 Object.defineProperty(ObservableArray.prototype, "length", {
     enumerable: false,
     configurable: true,
@@ -4812,16 +4830,22 @@ var createPath = exports.createPath = function createPath(location) {
 
 					var reactiveRender = function reactiveRender() {
 						isRenderingPending = false;
+						var exception = undefined;
 						var rendering = undefined;
 						reaction.track(function () {
 							if (isDevtoolsEnabled) {
 								_this.__$mobRenderStart = Date.now();
 							}
-							rendering = _mobx.extras.allowStateChanges(false, baseRender);
+							try {
+								rendering = _mobx.extras.allowStateChanges(false, baseRender);
+							} catch (e) {
+								exception = e;
+							}
 							if (isDevtoolsEnabled) {
 								_this.__$mobRenderEnd = Date.now();
 							}
 						});
+						if (exception) throw exception;
 						return rendering;
 					};
 
@@ -16406,7 +16430,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var serverData = '{"depth":6, "firstFour":true, "postId":0}';
+// let serverData = '{"depth":6, "firstFour":true, "postId":0}'
+var serverData = '{"postId":152795,"depth":6,"firstFour":true,"roundStore":{"nodes":[{"uid":11,"ordinal":"first","title":"first round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":11,"uid":0},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":11,"uid":1},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":11,"uid":2},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":11,"uid":3}]},"matches":4,"position":"Four","dates":""},{"uid":9,"ordinal":"first","title":"First Round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"Wake Forest","seat2Team":"Hello","seat1Seed":"2","seat2Seed":"2","seat1Winner":true,"seat2Winner":false,"seat1Logo":"http://campusinsiders-com-go-vip-co-develop.go-vip.co/wp-content/uploads/2017/03/2017_ncaa_mens_final_four_logo.svg","seat2Logo":"http://campusinsiders-com-go-vip-co-develop.go-vip.co/wp-content/uploads/2017/03/2017_ncaa_mens_final_four_logo.svg","articleId":"152852","article":{"content":"","id":"","title":""},"mainVideo":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","supplementalVideo1":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","supplementalVideo2":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","loading":false,"roundId":9,"uid":0},{"region":"South","seat1Team":"North Carolina","seat2Team":"Uconn","seat1Seed":"1","seat2Seed":"2","seat1Winner":false,"seat2Winner":true,"seat1Logo":"","seat2Logo":"","articleId":"152716","article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":1},{"region":"South","seat1Team":"Syracuse","seat2Team":"Georgetown","seat1Seed":"3","seat2Seed":"14","seat1Winner":true,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":"152698","article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":2},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":3},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":4},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":5},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":6},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":7},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":8},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":9},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":10},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":11},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":12},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":13},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":14},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":9,"uid":15}]},"matches":16,"position":"left","dates":""},{"count":8,"uid":108,"position":"left"},{"uid":7,"ordinal":"second","title":"Second Round","subtitle":"subtext","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"Villanova","seat2Team":"Uconn","seat1Seed":"1","seat2Seed":"2","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":"152613","article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":0},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":1},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":2},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":3},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":4},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":5},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":6},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":7,"uid":7}]},"matches":8,"position":"left","dates":""},{"count":4,"uid":106,"position":"left"},{"uid":5,"ordinal":"third","title":"third round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":5,"uid":0},{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":5,"uid":1},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":5,"uid":2},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":5,"uid":3}]},"matches":4,"position":"left","dates":""},{"count":2,"uid":104,"position":"left"},{"uid":3,"ordinal":"fourth","title":"fourth round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":3,"uid":0},{"region":"West","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":3,"uid":1}]},"matches":2,"position":"left","dates":""},{"count":1,"uid":102,"position":"left"},{"uid":1,"ordinal":"fifth","title":"fifth round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"South","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":1,"uid":0}]},"matches":1,"position":"left","dates":""},{"count":0,"uid":100,"position":"left"},{"uid":0,"ordinal":"sixth","title":"sixth round","subtitle":"","promo":"http://campusinsiders-com-go-vip-co-develop.go-vip.co/wp-content/uploads/2017/03/2017_ncaa_mens_final_four_logo.svg","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":0,"uid":0}]},"matches":1,"position":"","dates":""},{"count":0,"uid":101,"position":"right"},{"uid":2,"ordinal":"fifth","title":"fifth round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":2,"uid":0}]},"matches":1,"position":"right","dates":""},{"count":1,"uid":103,"position":"right"},{"uid":4,"ordinal":"fourth","title":"fourth round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":4,"uid":0},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":4,"uid":1}]},"matches":2,"position":"right","dates":""},{"count":2,"uid":105,"position":"right"},{"uid":6,"ordinal":"third","title":"third round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":6,"uid":0},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":6,"uid":1},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":6,"uid":2},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":6,"uid":3}]},"matches":4,"position":"right","dates":""},{"count":4,"uid":107,"position":"right"},{"uid":8,"ordinal":"second","title":"second round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":0},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":1},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":2},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":3},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":4},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":5},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":6},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":8,"uid":7}]},"matches":8,"position":"right","dates":""},{"count":8,"uid":109,"position":"right"},{"uid":10,"ordinal":"first","title":"first round","subtitle":"","promo":"","sponsor":"","sponsorLink":"","editting":false,"matchStore":{"matchups":[{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":0},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":1},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":2},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":3},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":4},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":5},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":6},{"region":"East","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":7},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":8},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":9},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":10},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":11},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":12},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":13},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":14},{"region":"Midwest","seat1Team":"","seat2Team":"","seat1Winner":false,"seat2Winner":false,"seat1Logo":"","seat2Logo":"","articleId":0,"article":{"content":"","id":"","title":""},"mainVideo":"","supplementalVideo1":"","supplementalVideo2":"","loading":false,"roundId":10,"uid":15}]},"matches":16,"position":"right","dates":""}]},"edittingEnabled":true,"activeMatchup":{"region":"South","seat1Team":"Wake Forest","seat2Team":"Hello","seat1Seed":"2","seat2Seed":"2","seat1Winner":true,"seat2Winner":false,"seat1Logo":"http://campusinsiders-com-go-vip-co-develop.go-vip.co/wp-content/uploads/2017/03/2017_ncaa_mens_final_four_logo.svg","seat2Logo":"http://campusinsiders-com-go-vip-co-develop.go-vip.co/wp-content/uploads/2017/03/2017_ncaa_mens_final_four_logo.svg","articleId":"152852","article":{"content":"","id":"","title":""},"mainVideo":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","supplementalVideo1":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","supplementalVideo2":"https://campusinsiders.com/videos/xtYTA4YTE6HPsQjpVlN0cLFNcCU5V3_f?video-embed=1","loading":false,"roundId":9,"uid":0}}';
 
 // Get data sent from the server.
 var wp_bracket = window.wp_bracket || {};
@@ -16761,13 +16786,13 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 				'div',
 				{ className: 'modal modal--visible' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					__WEBPACK_IMPORTED_MODULE_1_react_router__["d" /* Link */],
+					{ className: 'modal__close', to: '/' },
+					'Return to Bracket'
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'modal__content' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_react_router__["d" /* Link */],
-						{ className: 'modal__close', to: '/' },
-						'Return to Bracket'
-					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'div',
 						{ className: 'modal__matchup' },
@@ -17289,9 +17314,9 @@ var RoundComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_m
 						this.round.subtitle
 					)
 				),
-				promoImage,
 				quadrants,
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2____["g" /* Matchups */], { matchups: this.round.matchups, round: this.round })
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2____["g" /* Matchups */], { matchups: this.round.matchups, round: this.round }),
+				promoImage
 			);
 		}
 	}]);
@@ -20149,9 +20174,9 @@ function parserForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
 		case 'index':
 			return function (key, value, accumulator) {
-				result = /\[(\d*)\]$/.exec(key);
+				result = /\[(\d*)]$/.exec(key);
 
-				key = key.replace(/\[\d*\]$/, '');
+				key = key.replace(/\[\d*]$/, '');
 
 				if (!result) {
 					accumulator[key] = value;
@@ -20167,9 +20192,9 @@ function parserForArrayFormat(opts) {
 
 		case 'bracket':
 			return function (key, value, accumulator) {
-				result = /(\[\])$/.exec(key);
+				result = /(\[])$/.exec(key);
 
-				key = key.replace(/\[\]$/, '');
+				key = key.replace(/\[]$/, '');
 
 				if (!result || accumulator[key] === undefined) {
 					accumulator[key] = value;
