@@ -40,10 +40,10 @@ export default class RoundInterface {
 			promo: '',
 			sponsor: '',
 			sponsorLink: '',
-			editting: false,
-			matchStore: this.getDefaultMatchStore()
+			editting: false
 		};
 		Object.assign( this, defaults, data );
+		this.matchStore = data.matchStore ? new MatchStore( data.matchStore ) : this.getDefaultMatchStore();
 	}
 
 	getDefaultMatchStore() {
