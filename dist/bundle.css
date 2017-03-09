@@ -333,6 +333,11 @@ body.debug *:after {
     background-attachment: scroll;
     background-position: center;
   }
+	}.__media--large {
+	display: none
+}@media (min-width: 60em) {.__media--large{
+    display: inline;
+  }
 	}/*
  * Theme
  */body {
@@ -406,12 +411,7 @@ body.debug *:after {
 	color: #910f0f;
 	font-size: .8em;
 	border-bottom: .15em solid rgb(224, 229, 235);
-}.header__section {
-	display: none
-}@media (min-width: 60em) {.header__section{
-    display: block;
-  }
-	}.header__section--left {
+}.header__section--left {
 	text-align: left;
 }.header__section--right {
 	text-align: right;
