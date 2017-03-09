@@ -39,7 +39,17 @@ export default class AppStore {
 	}
 
 	@computed get json() {
-		return toJS( this );
+		let json = toJS( this );
+		json.postsStore = void 0;
+		json.editor = void 0;
+		json.roundStore.nodes.map( (node) => {
+			if ( node.hasOwnProperty('matchStore') ) {
+				node.matchStore.matchups.map( (match) => {
+					match.article = { content: "", id: "", title: "" };
+				})
+			}
+		});
+		return json;
 	}
 
 	@computed get stringified() {
@@ -83,13 +93,13 @@ export default class AppStore {
 
 	setupTransmitter() {
 		if ( window.parent ) {
-			this.transmitter = window.setInterval( () => { this.transmit( 'update') }, 3000 );
+			//Christiathis.transmitter = window.setInterval( () => { this.transmit( 'update') }, 3000 );
 		}
 		return this;
 	}
 
 	receive( event ) {
-		console.log( 'Editor: ', event );
+		//console.log( 'Editor: ', event );
 		let parsedData = ( 'string' === typeof(event.data) ) ? JSON.parse( event.data ) : event.data;
 		if ( void 0 !== parsedData && parsedData.hasOwnProperty('id') && 'setting' === parsedData.id ) {
 			let prop = this.parseProp( parsedData.data[0] );

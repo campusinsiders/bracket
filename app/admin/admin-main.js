@@ -5,12 +5,18 @@ wp.customize.bind( 'ready', function() {
 	// Init the controls.
 	bracket.customizer.initMainSection();
 
+	wp.customize.previewer.bind( 'ready', () => {
+		wp.customize.bind('change', () => wp.customize('wp_bracket_data')._dirty = true );
+		wp.customize('wp_bracket_data').get = () => ( wp.customize.previewer.targetWindow().appStore.stringified );
+	});
+
+
 	// Listen for init on the bracket.
 	window.addEventListener( "message", (event) => {
 		let parsedData = JSON.parse( event.data );
 		if ( void 0 !== parsedData && parsedData.hasOwnProperty('actions') ) {
 			parsedData.actions.map( ( action ) => {
-				console.log( 'Frame Event: ', event );
+				//console.log( 'Frame Event: ', event );
 				if ( 'init' === action.action ) {
 					// Init rounds.
 					const { nodes } = action.data.roundStore;

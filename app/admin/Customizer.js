@@ -25,9 +25,6 @@ export default class WPBracketCustomizer {
 		this.api = api;
 		this.panel = this.api.panel( this.panelId );
 		this.mainSection = new MainSection( this.api, this.mainSectionId );
-
-		// this.roundSection = this.api.section( this.roundSectionId );
-		// this.matchupSection = this.api.section( this.matchupSectionId );
 		return this;
 	}
 
