@@ -77,7 +77,8 @@ export default class RoundSectionControls extends SectionControls {
 			label: label,
 			settings: { 'default': this.setting('title') },
 			type: 'text',
-		    active: true
+		    active: true,
+		    priority: 10
 		};
 		let constructor = this.api.controlConstructor[controlData.type];
 		this.controls[controlId] = new this.api.Control( controlId, {
@@ -110,7 +111,8 @@ export default class RoundSectionControls extends SectionControls {
 			label: label,
 			settings: { 'default': this.setting('subtitle') },
 			type: 'text',
-		    active: true
+		    active: true,
+		    priority: 20
 		};
 		this.controls[controlId] = new this.api.Control( controlId, {
 			params: controlData,
@@ -148,7 +150,8 @@ export default class RoundSectionControls extends SectionControls {
 			},
 			canUpload: true,
 			type: 'upload',
-		    active: true
+		    active: true,
+		    priority: 50
 		};
 		let constructor = this.api.controlConstructor[controlData.type];
 		this.controls[controlId] = new constructor( controlId, {
@@ -187,7 +190,8 @@ export default class RoundSectionControls extends SectionControls {
 			},
 			canUpload: true,
 			type: 'upload',
-		    active: true
+		    active: true,
+		    priority: 100,
 		};
 		let constructor = this.api.controlConstructor[controlData.type];
 		this.controls[controlId] = new constructor( controlId, {
@@ -220,7 +224,8 @@ export default class RoundSectionControls extends SectionControls {
 			label: label,
 			settings: { 'default': this.setting('sponsorLink') },
 			type: 'text',
-		    active: true
+		    active: true,
+		    priority: 120
 		};
 		let constructor = this.api.controlConstructor[controlData.type];
 		this.controls[controlId] = new this.api.Control( controlId, {
