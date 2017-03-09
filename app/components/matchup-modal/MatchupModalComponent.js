@@ -30,7 +30,7 @@ export default class MatchupModalComponent extends Component {
 
 		if ( this.matchup ) {
 			this.props.store.setActiveMatchup( this.matchup );
-			if ( ! this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId ) {
+			if ( void 0 !== this.matchup.article && ( ! this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId ) ) {
 				postsStore.getPost( this.matchup.articleId ).then( (post) => this.matchup.article = post );
 			}
 		}
