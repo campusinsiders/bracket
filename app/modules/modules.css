@@ -324,6 +324,7 @@ html {
 		left: 50%;
 		margin-left: -13vw;
 		width: 26vw;
+		z-index: 4;
 	}
 
 	& .matchups {

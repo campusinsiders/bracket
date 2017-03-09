@@ -698,6 +698,7 @@ body.debug *:after {
     left: 50%;
     margin-left: -13vw;
     width: 26vw;
+    z-index: 4;
   }
 	}.round--firstFour .matchups{
 }@media (min-width: 60em){.round--firstFour .matchups{
