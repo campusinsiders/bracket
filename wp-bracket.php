@@ -18,7 +18,8 @@ add_action( 'wp_enqueue_scripts', function() {
 		wp_localize_script( 'bracket', 'wp_bracket', array(
 			'queriedObjectId' => get_queried_object_id(),
 			'bracketData' => wp_bracket_data( get_queried_object_id() ),
-			'endpoint' => home_url( '/wp-json/wp/v2/posts' )
+			'endpoint' => home_url( '/wp-json/wp/v2/posts' ),
+			'bracketUrl' => plugin_dir_url( __FILE__ )
 		) );
 		add_filter( 'playbook_should_enqueue_js', '__return_false' );
 		add_filter( 'playbook_should_enqueue_css', '__return_false' );
