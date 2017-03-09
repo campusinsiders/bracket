@@ -16680,7 +16680,7 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 				this.props.store.setActiveMatchup(this.matchup);
 				if (void 0 !== this.matchup.article && (!this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId)) {
 					postsStore.getPost(this.matchup.articleId).then(function (post) {
-						return _this2.matchup.article = post;
+						return _this2.matchup.article = post ? post : _this2.matchup.article;
 					});
 				}
 			}
@@ -16699,11 +16699,16 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 			    activeMatchup = _props$store2.activeMatchup,
 			    postsStore = _props$store2.postsStore;
 
+
 			if (this.matchup) {
-				if (void 0 !== this.matchup.article && (!this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId)) {
+				var _matchup = this.matchup,
+				    article = _matchup.article,
+				    articleId = _matchup.articleId;
+
+				if (void 0 === article && articleId || article.hasOwnProperty('id') && article.id !== articleId) {
 					this.matchup.loading = true;
 					postsStore.getPost(this.matchup.articleId).then(function (post) {
-						_this3.matchup.article = post;
+						_this3.matchup.article = post ? post : _this3.matchup.article;
 						_this3.matchup.loading = false;
 					});
 				}
@@ -17235,6 +17240,38 @@ var RoundComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_m
 	}, {
 		key: 'render',
 		value: function render() {
+			var _round = this.round,
+			    promo = _round.promo,
+			    quadrantTop = _round.quadrantTop,
+			    quadrantBottom = _round.quadrantBottom,
+			    uid = _round.uid;
+
+			var promoImage = function promoImage() {
+				return promo ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: 'promo' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: promo })
+				) : false;
+			};
+			var quadrants = [];
+			if (quadrantTop) {
+				var modifier = uid % 2 === 0 ? 'south' : 'east';
+				quadrants.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ key: 0, className: 'quadrantLabel quadrantLabel--' + modifier, onClick: this.onClick.bind(this) },
+					quadrantTop
+				));
+			}
+
+			if (quadrantBottom) {
+				var _modifier = uid % 2 === 0 ? 'west' : 'midwest';
+				quadrants.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ key: 1, className: 'quadrantLabel quadrantLabel--' + _modifier, onClick: this.onClick.bind(this) },
+					quadrantBottom
+				));
+			}
+
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
 				{ className: this.className() },
@@ -17252,11 +17289,8 @@ var RoundComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_m
 						this.round.subtitle
 					)
 				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
-					{ className: 'promo' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: this.round.promo })
-				),
+				promoImage,
+				quadrants,
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2____["g" /* Matchups */], { matchups: this.round.matchups, round: this.round })
 			);
 		}
@@ -17481,7 +17515,7 @@ var Editor = function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RoundInterface; });
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
+var _desc, _value, _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
 
 function _initDefineProp(target, property, descriptor, context) {
 	if (!descriptor) return;
@@ -17552,17 +17586,23 @@ var RoundInterface = (_class = function () {
 
 		_initDefineProp(this, 'sponsor', _descriptor4, this);
 
-		_initDefineProp(this, 'sponsorLink', _descriptor5, this);
+		_initDefineProp(this, 'quadrantTop', _descriptor5, this);
 
-		_initDefineProp(this, 'editting', _descriptor6, this);
+		_initDefineProp(this, 'quadrantBottom', _descriptor6, this);
 
-		_initDefineProp(this, 'matchStore', _descriptor7, this);
+		_initDefineProp(this, 'sponsorLink', _descriptor7, this);
 
+		_initDefineProp(this, 'editting', _descriptor8, this);
+
+		_initDefineProp(this, 'matchStore', _descriptor9, this);
+
+		this.initialData = data;
 		var defaults = {
 			uid: Math.random() * 100,
 			ordinal: '',
-			title: this.ordinal + ' round',
+			title: 'Round',
 			subtitle: '',
+			position: '',
 			promo: '',
 			sponsor: '',
 			sponsorLink: '',
@@ -17588,6 +17628,9 @@ var RoundInterface = (_class = function () {
 	}, {
 		key: 'getRegion',
 		value: function getRegion(index, matches) {
+			if ('Four' === this.position) {
+				return this.getRegionFirstFour(index);
+			}
 			if (index < matches / 2) {
 				if (this.uid % 2 === 1) {
 					return 'South';
@@ -17598,6 +17641,12 @@ var RoundInterface = (_class = function () {
 				return 'West';
 			}
 			return 'Midwest';
+		}
+	}, {
+		key: 'getRegionFirstFour',
+		value: function getRegionFirstFour(index) {
+			var regions = ['South', 'West', 'East', 'Midwest'];
+			return regions[index];
 		}
 	}, {
 		key: 'getMatchupById',
@@ -17624,13 +17673,19 @@ var RoundInterface = (_class = function () {
 }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'sponsor', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
 	enumerable: true,
 	initializer: null
-}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'sponsorLink', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
+}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'quadrantTop', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
 	enumerable: true,
 	initializer: null
-}), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'editting', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
+}), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, 'quadrantBottom', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
 	enumerable: true,
 	initializer: null
-}), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'matchStore', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
+}), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, 'sponsorLink', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
+	enumerable: true,
+	initializer: null
+}), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, 'editting', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
+	enumerable: true,
+	initializer: null
+}), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, 'matchStore', [__WEBPACK_IMPORTED_MODULE_0_mobx__["observable"]], {
 	enumerable: true,
 	initializer: null
 }), _applyDecoratedDescriptor(_class.prototype, 'matchups', [__WEBPACK_IMPORTED_MODULE_0_mobx__["computed"]], Object.getOwnPropertyDescriptor(_class.prototype, 'matchups'), _class.prototype)), _class);
@@ -17973,10 +18028,11 @@ var AppStore = (_class = function () {
 			});
 
 			this.ordinals.reverse().slice(1).map(function (round) {
+				var putQuadrant = [3, 4].indexOf(roundKey) > -1 ? 'Region' : void 0;
 				nodes.unshift(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["b" /* DividerInterface */]({ uid: dividerKey++, count: round.dividers, position: 'left' }));
-				nodes.unshift(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["a" /* RoundInterface */]({ uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "left" }));
+				nodes.unshift(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["a" /* RoundInterface */]({ uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "left", quadrantTop: putQuadrant, quadrantBottom: putQuadrant }));
 				nodes.push(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["b" /* DividerInterface */]({ uid: dividerKey++, count: round.dividers, position: 'right' }));
-				nodes.push(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["a" /* RoundInterface */]({ uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "right" }));
+				nodes.push(new __WEBPACK_IMPORTED_MODULE_4__interfaces___["a" /* RoundInterface */]({ uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "right", quadrantTop: putQuadrant, quadrantBottom: putQuadrant }));
 			});
 
 			if (this.firstFour) {

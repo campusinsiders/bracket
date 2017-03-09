@@ -21,6 +21,10 @@ export default class RoundInterface {
 
 	@observable sponsor:String;
 
+	@observable quadrantTop:String;
+
+	@observable quadrantBottom:String;
+
 	@observable sponsorLink:String;
 
 	@observable editting:Boolean;
@@ -32,11 +36,13 @@ export default class RoundInterface {
 	}
 
 	constructor( data, uid ) {
+		this.initialData = data;
 		const defaults = {
 			uid: Math.random() * 100,
 			ordinal: '',
-			title: `${this.ordinal} round`,
+			title: `Round`,
 			subtitle: '',
+			position: '',
 			promo: '',
 			sponsor: '',
 			sponsorLink: '',
@@ -59,6 +65,9 @@ export default class RoundInterface {
 	}
 
 	getRegion( index, matches ) {
+		if ( 'Four' === this.position ) {
+			return this.getRegionFirstFour( index );
+		}
 		if ( index < ( matches / 2 ) ) {
 			if( this.uid % 2 === 1 ) {
 				return 'South';
@@ -69,6 +78,11 @@ export default class RoundInterface {
 			return 'West';
 		}
 		return 'Midwest';
+	}
+
+	getRegionFirstFour( index ) {
+		const regions = [ 'South', 'West', 'East', 'Midwest' ];
+		return regions[index];
 	}
 
 	getMatchupById( uid ) {

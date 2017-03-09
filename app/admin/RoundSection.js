@@ -55,6 +55,10 @@ export default class RoundSectionControls extends SectionControls {
 		if ( this.round.uid == 0 ) {
 			this.createPromoControl();
 		}
+		if ( this.round.quadrantTop || this.round.quadrantBottom ) {
+			this.createQuadrantTopControl();
+			this.createQuadrantBottomControl();
+		}
 	}
 
 	createTitleSetting() {
@@ -226,6 +230,74 @@ export default class RoundSectionControls extends SectionControls {
 			type: 'text',
 		    active: true,
 		    priority: 120
+		};
+		let constructor = this.api.controlConstructor[controlData.type];
+		this.controls[controlId] = new this.api.Control( controlId, {
+			params: controlData,
+			previewer: this.api.previewer
+		});
+		this.api.control.add(controlId, this.controls[controlId]);
+		this.controls[controlId].section(this.section.id);
+		this.controls[controlId].activate();
+		return this.controls[controlId];
+	}
+
+	createQuadrantTopSetting() {
+		const settingId = this.setting('quadrantTop');
+		let settingValue = this.round.quadrantTop || '';
+		this.api.create( settingId, settingId, settingValue, this.settingOpts() );
+	}
+
+	createQuadrantTopControl() {
+		this.createQuadrantTopSetting();
+		const controlId = this.setting('quadrantTop');
+		const label = 'Conference Label Top';
+		const controlVars = {
+			id: controlId,
+			label: label,
+			value: this.round.quadrantTop || ''
+		};
+		let controlData = {
+			content: this.template( 'input_text', controlVars ),
+			label: label,
+			settings: { 'default': this.setting('quadrantTop') },
+			type: 'text',
+		    active: true,
+		    priority: 10
+		};
+		let constructor = this.api.controlConstructor[controlData.type];
+		this.controls[controlId] = new this.api.Control( controlId, {
+			params: controlData,
+			previewer: this.api.previewer
+		});
+		this.api.control.add(controlId, this.controls[controlId]);
+		this.controls[controlId].section(this.section.id);
+		this.controls[controlId].activate();
+		return this.controls[controlId];
+	}
+
+	createQuadrantBottomSetting() {
+		const settingId = this.setting('quadrantBottom');
+		let settingValue = this.round.quadrantBottom || '';
+		this.api.create( settingId, settingId, settingValue, this.settingOpts() );
+	}
+
+	createQuadrantBottomControl() {
+		this.createQuadrantBottomSetting();
+		const controlId = this.setting('quadrantBottom');
+		const label = 'Conference Label Bottom';
+		const controlVars = {
+			id: controlId,
+			label: label,
+			value: this.round.quadrantBottom || ''
+		};
+		let controlData = {
+			content: this.template( 'input_text', controlVars ),
+			label: label,
+			settings: { 'default': this.setting('quadrantBottom') },
+			type: 'text',
+		    active: true,
+		    priority: 10
 		};
 		let constructor = this.api.controlConstructor[controlData.type];
 		this.controls[controlId] = new this.api.Control( controlId, {

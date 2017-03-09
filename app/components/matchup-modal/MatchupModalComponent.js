@@ -31,7 +31,7 @@ export default class MatchupModalComponent extends Component {
 		if ( this.matchup ) {
 			this.props.store.setActiveMatchup( this.matchup );
 			if ( void 0 !== this.matchup.article && ( ! this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId ) ) {
-				postsStore.getPost( this.matchup.articleId ).then( (post) => this.matchup.article = post );
+				postsStore.getPost( this.matchup.articleId ).then( (post) => this.matchup.article = post ? post : this.matchup.article );
 			}
 		}
 	}
@@ -42,11 +42,13 @@ export default class MatchupModalComponent extends Component {
 
 	componentWillReact() {
 		let { activeMatchup, postsStore } = this.props.store;
+
 		if ( this.matchup ) {
-			if ( void 0 !== this.matchup.article && ( ! this.matchup.article.hasOwnProperty('id') || this.matchup.article.id !== this.matchup.articleId) ) {
+			const { article, articleId } = this.matchup;
+			if ( ( void 0 === article && articleId ) || ( article.hasOwnProperty('id') && ( article.id !== articleId ) ) ) {
 				this.matchup.loading = true;
 				postsStore.getPost( this.matchup.articleId ).then( (post) => {
-					this.matchup.article = post;
+					this.matchup.article = post ? post : this.matchup.article;
 					this.matchup.loading = false;
 				});
 			}

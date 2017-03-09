@@ -729,7 +729,7 @@ var MatchSectionControls = function (_SectionControls) {
 		value: function createSupplementalVideo1Control() {
 			this.createSupplementalVideo1Setting();
 			var controlId = this.setting('supplementalVideo1');
-			var label = 'Main Video Embed URL';
+			var label = 'Supplemental Video Embed URL';
 			var controlVars = {
 				id: controlId,
 				label: label,
@@ -764,7 +764,7 @@ var MatchSectionControls = function (_SectionControls) {
 		value: function createSupplementalVideo2Control() {
 			this.createSupplementalVideo2Setting();
 			var controlId = this.setting('supplementalVideo2');
-			var label = 'Main Video Embed URL';
+			var label = 'Supplemental Video Embed URL';
 			var controlVars = {
 				id: controlId,
 				label: label,
@@ -864,6 +864,10 @@ var RoundSectionControls = function (_SectionControls) {
 			this.createSponsorLinkControl();
 			if (this.round.uid == 0) {
 				this.createPromoControl();
+			}
+			if (this.round.quadrantTop || this.round.quadrantBottom) {
+				this.createQuadrantTopControl();
+				this.createQuadrantBottomControl();
 			}
 		}
 	}, {
@@ -1057,6 +1061,78 @@ var RoundSectionControls = function (_SectionControls) {
 			this.controls[controlId].activate();
 			return this.controls[controlId];
 		}
+	}, {
+		key: 'createQuadrantTopSetting',
+		value: function createQuadrantTopSetting() {
+			var settingId = this.setting('quadrantTop');
+			var settingValue = this.round.quadrantTop || '';
+			this.api.create(settingId, settingId, settingValue, this.settingOpts());
+		}
+	}, {
+		key: 'createQuadrantTopControl',
+		value: function createQuadrantTopControl() {
+			this.createQuadrantTopSetting();
+			var controlId = this.setting('quadrantTop');
+			var label = 'Conference Label Top';
+			var controlVars = {
+				id: controlId,
+				label: label,
+				value: this.round.quadrantTop || ''
+			};
+			var controlData = {
+				content: this.template('input_text', controlVars),
+				label: label,
+				settings: { 'default': this.setting('quadrantTop') },
+				type: 'text',
+				active: true,
+				priority: 10
+			};
+			var constructor = this.api.controlConstructor[controlData.type];
+			this.controls[controlId] = new this.api.Control(controlId, {
+				params: controlData,
+				previewer: this.api.previewer
+			});
+			this.api.control.add(controlId, this.controls[controlId]);
+			this.controls[controlId].section(this.section.id);
+			this.controls[controlId].activate();
+			return this.controls[controlId];
+		}
+	}, {
+		key: 'createQuadrantBottomSetting',
+		value: function createQuadrantBottomSetting() {
+			var settingId = this.setting('quadrantBottom');
+			var settingValue = this.round.quadrantBottom || '';
+			this.api.create(settingId, settingId, settingValue, this.settingOpts());
+		}
+	}, {
+		key: 'createQuadrantBottomControl',
+		value: function createQuadrantBottomControl() {
+			this.createQuadrantBottomSetting();
+			var controlId = this.setting('quadrantBottom');
+			var label = 'Conference Label Bottom';
+			var controlVars = {
+				id: controlId,
+				label: label,
+				value: this.round.quadrantBottom || ''
+			};
+			var controlData = {
+				content: this.template('input_text', controlVars),
+				label: label,
+				settings: { 'default': this.setting('quadrantBottom') },
+				type: 'text',
+				active: true,
+				priority: 10
+			};
+			var constructor = this.api.controlConstructor[controlData.type];
+			this.controls[controlId] = new this.api.Control(controlId, {
+				params: controlData,
+				previewer: this.api.previewer
+			});
+			this.api.control.add(controlId, this.controls[controlId]);
+			this.controls[controlId].section(this.section.id);
+			this.controls[controlId].activate();
+			return this.controls[controlId];
+		}
 	}]);
 
 	return RoundSectionControls;
@@ -1099,7 +1175,7 @@ var Templates = {
 				els = els.concat('<option value="' + option.value + '">' + option.name + '</option>');
 			}
 		});
-		return '\n\t\t"<li id="customize-control-' + this.id + '" class="customize-control customize-control-dropdown">\n\t\t\t<label>\n\t\t\t\t<span class="customize-control-title">' + this.label + '</span>\n\t\t\t\t<select data-customize-setting-link="' + this.id + '">\n\t\t\t\t<option value="0" selected=\'selected\'>&mdash; Select &mdash;</option>\n\t\t\t\t' + els + '\n\t\t\t</label>\n\t\t</li>\n\t\t';
+		return '\n\t\t<li id="customize-control-' + this.id + '" class="customize-control customize-control-dropdown">\n\t\t\t<label>\n\t\t\t\t<span class="customize-control-title">' + this.label + '</span>\n\t\t\t\t<select data-customize-setting-link="' + this.id + '">\n\t\t\t\t<option value="0" selected=\'selected\'>&mdash; Select &mdash;</option>\n\t\t\t\t' + els + '\n\t\t\t</label>\n\t\t</li>\n\t\t';
 	}
 };
 

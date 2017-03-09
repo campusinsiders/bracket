@@ -136,10 +136,11 @@ export default class AppStore {
 		} );
 
 		this.ordinals.reverse().slice(1).map( (round) => {
+			const putQuadrant = ( [3,4].indexOf( roundKey ) > -1 ) ? 'Region' : void 0;
 			nodes.unshift( new DividerInterface( { uid: dividerKey++, count: round.dividers, position: 'left' } ) );
-			nodes.unshift( new RoundInterface( { uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "left" } ) );
+			nodes.unshift( new RoundInterface( { uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "left", quadrantTop: putQuadrant, quadrantBottom: putQuadrant } ) );
 			nodes.push( new DividerInterface( { uid: dividerKey++, count: round.dividers, position: 'right' } ) );
-			nodes.push( new RoundInterface( { uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "right" } ) );
+			nodes.push( new RoundInterface( { uid: roundKey++, matches: round.matchups, ordinal: round.ordinal, position: "right", quadrantTop: putQuadrant, quadrantBottom: putQuadrant } ) );
 		});
 
 		if ( this.firstFour ) {

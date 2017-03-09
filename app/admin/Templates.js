@@ -77,7 +77,7 @@ const Templates = {
 			}
 		});
 		return (`
-		"<li id="customize-control-${this.id}" class="customize-control customize-control-dropdown">
+		<li id="customize-control-${this.id}" class="customize-control customize-control-dropdown">
 			<label>
 				<span class="customize-control-title">${this.label}</span>
 				<select data-customize-setting-link="${this.id}">

@@ -25,15 +25,41 @@ export default class RoundComponent extends Component {
 	}
 
 	render() {
+		const { promo, quadrantTop, quadrantBottom, uid } = this.round;
+		const promoImage = () => {
+			return promo ? (
+				<div className="promo">
+					<img src={promo}/>
+				</div>
+			) : false;
+		}
+		let quadrants = [];
+		if ( quadrantTop ) {
+			let modifier = ( ( uid % 2 ) === 0) ? 'south' : 'east';
+			quadrants.push(
+				<div key={0} className={`quadrantLabel quadrantLabel--${modifier}`} onClick={this.onClick.bind(this)}>
+					{quadrantTop}
+				</div>
+			);
+		}
+
+		if ( quadrantBottom ) {
+			let modifier = ( ( uid % 2 ) === 0) ? 'west' : 'midwest';
+			quadrants.push(
+				<div key={1} className={`quadrantLabel quadrantLabel--${modifier}`} onClick={this.onClick.bind(this)}>
+					{quadrantBottom}
+				</div>
+			);
+		}
+
 		return (
 			<div className={this.className()}>
 				<div className="roundTitle" onClick={this.onClick.bind(this)}>
 					<div className="roundTitle__name">{this.round.title}</div>
 					<div className="roundTitle__dates">{this.round.subtitle}</div>
 				</div>
-				<div className="promo">
-					<img src={this.round.promo}/>
-				</div>
+				{promoImage}
+				{quadrants}
 				<Matchups matchups={this.round.matchups} round={this.round}/>
 			</div>
 		);

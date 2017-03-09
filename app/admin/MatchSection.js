@@ -418,7 +418,7 @@ export default class MatchSectionControls extends SectionControls {
 	createSupplementalVideo1Control() {
 		this.createSupplementalVideo1Setting();
 		const controlId = this.setting('supplementalVideo1');
-		const label = 'Main Video Embed URL';
+		const label = 'Supplemental Video Embed URL';
 		const controlVars = {
 			id: controlId,
 			label: label,
@@ -451,7 +451,7 @@ export default class MatchSectionControls extends SectionControls {
 	createSupplementalVideo2Control() {
 		this.createSupplementalVideo2Setting();
 		const controlId = this.setting('supplementalVideo2');
-		const label = 'Main Video Embed URL';
+		const label = 'Supplemental Video Embed URL';
 		const controlVars = {
 			id: controlId,
 			label: label,
