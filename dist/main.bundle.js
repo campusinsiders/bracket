@@ -17566,10 +17566,10 @@ var RoundInterface = (_class = function () {
 			promo: '',
 			sponsor: '',
 			sponsorLink: '',
-			editting: false,
-			matchStore: this.getDefaultMatchStore()
+			editting: false
 		};
 		Object.assign(this, defaults, data);
+		this.matchStore = data.matchStore ? new __WEBPACK_IMPORTED_MODULE_1__stores_matchStore__["a" /* default */](data.matchStore) : this.getDefaultMatchStore();
 	}
 
 	_createClass(RoundInterface, [{
