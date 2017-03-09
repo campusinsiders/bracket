@@ -11,14 +11,18 @@
 add_action( 'wp_enqueue_scripts', function() {
 	wp_register_script( 'bracket-manifest', plugins_url( 'dist/manifest.bundle.js', __FILE__ ), [], false, true );
 	wp_register_script( 'bracket-vendor', plugins_url( 'dist/vendor.bundle.js', __FILE__ ), ['bracket-manifest'], false, true );
-	wp_enqueue_script( 'bracket', plugins_url( 'dist/main.bundle.js', __FILE__ ), ['bracket-vendor'], false, true );
-	wp_enqueue_style( 'bracket', plugins_url( 'dist/bundle.css', __FILE__ ), [] );
-	wp_localize_script( 'bracket', 'wp_bracket', array(
-		'queriedObjectId' => get_queried_object_id(),
-		'bracketData' => wp_bracket_data( get_queried_object_id() ),
-		'endpoint' => home_url( '/wp-json/wp/v2/posts' )
-	) );
-	add_filter( 'playbook_should_enqueue_js', '__return_false' );
+
+	if ( is_page_template( 'template-bracket.php' ) ) {
+		wp_enqueue_script( 'bracket', plugins_url( 'dist/main.bundle.js', __FILE__ ), ['bracket-vendor'], false, true );
+		wp_enqueue_style( 'bracket', plugins_url( 'dist/bundle.css', __FILE__ ), [] );
+		wp_localize_script( 'bracket', 'wp_bracket', array(
+			'queriedObjectId' => get_queried_object_id(),
+			'bracketData' => wp_bracket_data( get_queried_object_id() ),
+			'endpoint' => home_url( '/wp-json/wp/v2/posts' )
+		) );
+		add_filter( 'playbook_should_enqueue_js', '__return_false' );
+		add_filter( 'playbook_should_enqueue_css', '__return_false' );
+	}
 }, 1 );
 
 function wp_bracket_data( $post_id ) {
@@ -67,7 +71,7 @@ function wp_bracket_customizer( $wp_customize ) {
 	) );
 	$wp_customize->add_setting( 'wp_bracket_data', array(
 		'type' => 'wp_bracket',
-		'capability' => 'edit_theme_options',
+		'capability' => 'edit_posts',
 		'default' => '',
 		'transport' => 'postMessage'
 	) );
@@ -79,35 +83,12 @@ function wp_bracket_customizer( $wp_customize ) {
 }
 add_action( 'customize_register', 'wp_bracket_customizer', 10, 1 );
 
-function wp_bracket_customize_changeset_save_data( $data, $context ) {
-	//error_log( print_r( $data, true ) );
-	//error_log( print_r( $context['previous_data'], true ) );
-	return $data;
-}
-add_action( 'customize_changeset_save_data', 'wp_bracket_customize_changeset_save_data', 10, 2 );
-
-function wp_bracket_customize_save( \WP_Customize_Manager $wp_customize ) {
-	error_log( print_r( $wp_customize, true ) );
-	return $wp_customize;
-}
-//add_action( 'customize_save', 'wp_bracket_customize_save', 10, 1 );
-
-// add_action( 'customize_update_wp_bracket', function( $value, $WP_Customize_Setting ) {
-// 	error_log( 'hello world');
-// 	error_log( print_r( $value, true ) );
-// 	error_log( print_r( $WP_Customize_Setting, true ) );
-// }, 10, 2 );
 
 function customize_update_wp_bracket( $value, $setting ) {
-	error_log( 'value:' );
-	error_log( print_r( $value, true ) );
-	error_log( 'setting:');
 	$new_setting = $setting;
 	$new_setting->manager = null;
-	error_log( print_r( $new_setting, true ) );
 	if ( 'wp_bracket_data' === $setting->id ) {
 		$data = json_decode( $value );
-		error_log( print_r( $data, true ) );
 		if ( isset( $data->postId ) ) {
 			update_post_meta( absint( $data->postId ), 'wp_bracket_data', wp_slash(wp_json_encode($value)) );
 		}
