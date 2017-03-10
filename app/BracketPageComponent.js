@@ -4,6 +4,13 @@ import { inject, observer } from 'mobx-react';
 // Internal.
 import BracketComponent from './BracketComponent';
 
+if ( window.hasOwnProperty( '_gaq' ) && _gaq.hasOwnProperty('push') ) {
+	hashHistory.listen((location) => {
+		_gaq.push(['_trackPageview', location.pathname]);
+	} );
+} else {
+	console.warn( 'Google analytics is not configured, pageviews will not be sent to analytics!' );
+}
 /**
  * React Component: BracketComponent
  */

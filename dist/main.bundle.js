@@ -11856,7 +11856,7 @@ var RouterContext = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createClass({
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Router__ = __webpack_require__(540);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__Router__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__Router__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Link__ = __webpack_require__(223);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__Link__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__IndexLink__ = __webpack_require__(536);
@@ -11889,7 +11889,7 @@ var RouterContext = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createClass({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__browserHistory__ = __webpack_require__(543);
 /* unused harmony reexport browserHistory */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__hashHistory__ = __webpack_require__(547);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_16__hashHistory__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_16__hashHistory__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__createMemoryHistory__ = __webpack_require__(227);
 /* unused harmony reexport createMemoryHistory */
 /* components */
@@ -16530,6 +16530,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Internal.
 
 
+if (window.hasOwnProperty('_gaq') && _gaq.hasOwnProperty('push')) {
+	__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* hashHistory */].listen(function (location) {
+		_gaq.push(['_trackPageview', location.pathname]);
+	});
+} else {
+	console.warn('Google analytics is not configured, pageviews will not be sent to analytics!');
+}
 /**
  * React Component: BracketComponent
  */
@@ -16549,8 +16556,8 @@ var BracketPageComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODU
 				'div',
 				{ className: 'bracket__wrap' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Router */],
-					{ history: __WEBPACK_IMPORTED_MODULE_1_react_router__["b" /* hashHistory */],
+					__WEBPACK_IMPORTED_MODULE_1_react_router__["b" /* Router */],
+					{ history: __WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* hashHistory */],
 						createElement: function createElement(component, props) {
 							var _props = props,
 							    location = _props.location;
