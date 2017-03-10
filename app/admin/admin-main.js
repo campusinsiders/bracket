@@ -6,6 +6,9 @@ wp.customize.bind( 'ready', function() {
 	bracket.customizer.initMainSection();
 
 	wp.customize.previewer.bind( 'ready', () => {
+		if ( ! wp.customize.previewer.targetWindow().hasOwnProperty('appStore' ) ) {
+			return;
+		}
 		wp.customize.bind('change', () => wp.customize('wp_bracket_data')._dirty = true );
 		wp.customize('wp_bracket_data').get = () => ( wp.customize.previewer.targetWindow().appStore.stringified );
 	});
