@@ -17017,7 +17017,8 @@ var MatchupComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'span',
 						{ className: 'team__name' },
-						this.match.seat1Team
+						this.match.seat1Team,
+						' \xA0'
 					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'span',
@@ -17046,7 +17047,8 @@ var MatchupComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'span',
 						{ className: 'team__name' },
-						this.match.seat2Team
+						this.match.seat2Team,
+						' \xA0'
 					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'span',

@@ -41,7 +41,7 @@ export default class MatchupComponent extends Component {
 			<Link className={this.getMatchupClass()} to={this.getLink()} onClick={this.onClick.bind(this)}>
 				<div className={this.getTeamClass(this.match.seat1Winner)}>
 					<span className="team__seed">{this.match.seat1Seed}</span>
-					<span className="team__name">{this.match.seat1Team}</span>
+					<span className="team__name">{this.match.seat1Team} &nbsp;</span>
 					<span className="team__logo">
 						<img src={this.match.seat1Logo}/>
 					</span>
@@ -49,7 +49,7 @@ export default class MatchupComponent extends Component {
 				<div className="matchupPreview">Preview <span>Matchup</span></div>
 				<div className={this.getTeamClass(this.match.seat2Winner)}>
 					<span className="team__seed">{this.match.seat2Seed}</span>
-					<span className="team__name">{this.match.seat2Team}</span>
+					<span className="team__name">{this.match.seat2Team} &nbsp;</span>
 					<span className="team__logo">
 						<img src={this.match.seat2Logo}/>
 					</span>
