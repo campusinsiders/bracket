@@ -69,13 +69,22 @@ class WP_Bracket {
 	/**
 	 * Register Dependencies
 	 *
+	 * Adds support for externally hosted files, a temporary requirement for WordPress VIP.
+	 * See ticket 63527 for more details.
+	 *
+	 * @link https://wordpressvip.zendesk.com/hc/en-us/requests/63527
+	 *
 	 * @return WP_Bracket Self instance.
 	 */
 	public function register_dependencies() {
-		wp_register_script( 'bracket-manifest', plugins_url( 'dist/manifest.bundle.js', __FILE__ ), [], false, true );
-		wp_register_script( 'bracket-vendor', plugins_url( 'dist/vendor.bundle.js', __FILE__ ), [ 'bracket-manifest' ], false, true );
-		wp_register_script( 'bracket', plugins_url( 'dist/main.bundle.js', __FILE__ ), [ 'bracket-vendor' ], false, true );
-		wp_register_script( 'admin-bracket', plugins_url( 'dist/admin.bundle.js', __FILE__ ), [ 'bracket-vendor' ], false, true );
+		$options = get_option( 'wp_bracket_options' );
+		if ( false !== $options && isset( $options['source_url'] ) ) {
+			$source_url = $options['source_url'];
+		}
+		wp_register_script( 'bracket-manifest', $source_url . '/manifest.bundle.js', [], false, true );
+		wp_register_script( 'bracket-vendor', $source_url . '/vendor.bundle.js', [ 'bracket-manifest' ], false, true );
+		wp_register_script( 'bracket', $source_url . '/main.bundle.js', [ 'bracket-vendor' ], false, true );
+		wp_register_script( 'admin-bracket', $source_url . '/admin.bundle.js', [ 'bracket-vendor' ], false, true );
 		wp_register_style( 'bracket', plugins_url( 'dist/bundle.css', __FILE__ ), [] );
 
 		return $this->enqueue_dependencies();

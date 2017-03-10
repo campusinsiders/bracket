@@ -10,7 +10,9 @@
 namespace Lift\Campus_Insiders\WP_Bracket;
 use Lift\Campus_Insiders\WP_Bracket\WP_Bracket;
 
-// Require the WP_Bracket class.
+// Require the WP_Bracket files.
 require_once( plugin_dir_path( __FILE__ ) . 'class-wp-bracket.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'wp-bracket-settings.php' );
+
 
 add_action( 'plugins_loaded', array( WP_Bracket::class, 'factory' ) );
