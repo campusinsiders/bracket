@@ -42,7 +42,7 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin('bundle.css'),
-		//new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.UglifyJsPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			names: [ 'vendor', 'manifest' ]
 		}),
