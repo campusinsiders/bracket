@@ -824,18 +824,18 @@ body.debug *:after {
 }@media (min-width: 60em) {.quadrantLabel{
     display: block;
   }
-	}.quadrantLabel--south,
-.quadrantLabel--west {
+	}.quadrantLabel--topLeft,
+.quadrantLabel--bottomLeft {
 	left: 0;
-}.quadrantLabel--east,
-.quadrantLabel--midwest {
+}.quadrantLabel--topRight,
+.quadrantLabel--bottomRight {
 	right: 0;
 	text-align: right;
-}.quadrantLabel--south,
-.quadrantLabel--east {
+}.quadrantLabel--topLeft,
+.quadrantLabel--topRight {
 	top: 4.1875rem;
-}.quadrantLabel--west,
-.quadrantLabel--midwest {
+}.quadrantLabel--bottomLeft,
+.quadrantLabel--bottomRight {
 	bottom: 2rem;
 }.matchups {
 	display: -webkit-box;
