@@ -465,24 +465,24 @@ html {
 	}
 }
 
-.quadrantLabel--south,
-.quadrantLabel--west {
+.quadrantLabel--topLeft,
+.quadrantLabel--bottomLeft {
 	left: 0;
 }
 
-.quadrantLabel--east,
-.quadrantLabel--midwest {
+.quadrantLabel--topRight,
+.quadrantLabel--bottomRight {
 	right: 0;
 	text-align: right;
 }
 
-.quadrantLabel--south,
-.quadrantLabel--east {
+.quadrantLabel--topLeft,
+.quadrantLabel--topRight {
 	top: calc( 2rem + var(--size-roundTitleHeight) );
 }
 
-.quadrantLabel--west,
-.quadrantLabel--midwest {
+.quadrantLabel--bottomLeft,
+.quadrantLabel--bottomRight {
 	bottom: 2rem;
 }
 
@@ -1075,7 +1075,7 @@ html {
 	flex-direction: column;
 
 	@media (--width-large) {
-		flex: .5;
+		flex: 1;
 		flex-direction: row;
 	}
 
