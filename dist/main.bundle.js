@@ -17903,19 +17903,19 @@ var RoundInterface = (_class = function () {
 			}
 			if (index < matches / 2) {
 				if (this.uid % 2 === 1) {
-					return 'topRight';
+					return 'TopLeft';
 				}
-				return 'bottomRight';
+				return 'TopRight';
 			}
 			if (this.uid % 2 === 1) {
-				return 'topLeft';
+				return 'BottomLeft';
 			}
-			return 'bottomLeft';
+			return 'BottomRight';
 		}
 	}, {
 		key: 'getRegionFirstFour',
 		value: function getRegionFirstFour(index) {
-			var regions = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
+			var regions = ['TopLeft', 'TopRight', 'BottomLeft', 'BottomRight'];
 			return regions[index];
 		}
 	}, {
@@ -18322,6 +18322,36 @@ var AppStore = (_class = function () {
 		value: function setActiveMatchup(matchup) {
 			this.activeMatchup = matchup;
 			this.editor.setTarget(this.activeMatchup);
+		}
+	}, {
+		key: 'debugBracket',
+		value: function debugBracket() {
+			var _this = this;
+
+			var regions = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
+			this.roundStore.rounds.map(function (round) {
+				round.title = 'Round UID: ' + round.uid;
+				round.subtitle = 'Round ' + round.uid + ' Subtitle';
+				round.quadrantTop = [3, 4].indexOf(round.uid) > -1 ? regions.shift() : void 0;
+				round.quadrantBottom = [3, 4].indexOf(round.uid) > -1 ? regions.shift() : void 0;
+				round.matchStore.matchups.map(function (match) {
+					match.seat1Team = 'Rd: ' + match.roundId + ' | Rg: ' + match.region + ' | Team: Top';
+					match.seat2Team = 'Rd: ' + match.roundId + ' | Rg: ' + match.region + ' | Team: Bottom';
+					match.seat1Winner = Math.random() < 0.5 ? true : false;
+					match.seat2Winner = !match.seat1Winner;
+					match.seat1Seed = 1;
+					match.seat2Seed = 2;
+					match.articleId = 0;
+					match.article = { title: 'Test Title', content: _this.getDevContent(), id: 0 };
+					match.mainVideo = 'https://campusinsiders.com/videos/purdues-p-j-thompson-nails-another-half-court-buzzer-beater/video-embed/';
+					match.supplementalVideo2 = match.supplementalVideo1 = match.mainVideo;
+				});
+			});
+		}
+	}, {
+		key: 'getDevContent',
+		value: function getDevContent() {
+			return '\n\t\t\t<h1>HTML Ipsum Presents</h1>\n\n\t\t\t<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>\n\n\t\t\t<h2>Header Level 2</h2>\n\n\t\t\t<ol>\n\t\t\t   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>\n\t\t\t   <li>Aliquam tincidunt mauris eu risus.</li>\n\t\t\t</ol>\n\n\t\t\t<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>\n\n\t\t\t<h3>Header Level 3</h3>\n\n\t\t\t<ul>\n\t\t\t   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>\n\t\t\t   <li>Aliquam tincidunt mauris eu risus.</li>\n\t\t\t</ul>\n\n\t\t\t<pre><code>\n\t\t\t#header h1 a {\n\t\t\t  display: block;\n\t\t\t  width: 300px;\n\t\t\t  height: 80px;\n\t\t\t}\n\t\t\t</code></pre>\n\t\t';
 		}
 	}, {
 		key: 'allOrdinals',
