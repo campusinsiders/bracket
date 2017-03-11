@@ -56,5 +56,23 @@ export default class Matchup {
 			articleId: 0
 		};
 		Object.assign(this, defaults, data );
+		this.upgradeRegions();
+	}
+
+	upgradeRegions() {
+		switch ( this.region ) {
+			case 'South':
+				this.region = 'TopLeft';
+				break;
+			case 'East':
+				this.region = 'BottomLeft';
+				break;
+			case 'West':
+				this.region = 'topRight';
+				break;
+			case 'Midwest':
+				this.region = 'BottomRight';
+				break;
+		}
 	}
 }
