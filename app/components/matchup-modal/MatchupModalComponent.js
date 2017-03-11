@@ -79,6 +79,38 @@ export default class MatchupModalComponent extends Component {
 		return false;
 	}
 
+	getVideos() {
+		if ( ! this.matchup.mainVideo && ! this.matchup.supplementalVideo1 && ! this.matchup.supplementalVideo2 ) {
+			return;
+		}
+
+		const videos = [];
+		if ( this.matchup.mainVideo ) {
+			videos.push(
+				<div key={'mainVideo'} className="modal__video modal__video--matchupVideo">
+					<div><iframe width="560" height="315" src={this.matchup.mainVideo} frameBorder="0" allowFullScreen></iframe></div>
+				</div>
+				);
+		}
+		if ( this.matchup.supplementalVideo1 || this.matchup.supplementalVideo2 ) {
+			videos.push(
+				<div key={'teamVideos'} className="modal__teamVideos">
+					<div className="modal__video modal__video--teamVideo">
+						<div><iframe width="560" height="315" src={this.matchup.supplementalVideo1} frameBorder="0" allowFullScreen></iframe></div>
+					</div>
+					<div className="modal__video modal__video--teamVideo">
+						<div><iframe width="560" height="315" src={this.matchup.supplementalVideo2} frameBorder="0" allowFullScreen></iframe></div>
+					</div>
+				</div>
+			);
+		}
+		return(
+			<div className="modal__videos">
+				{videos}
+			</div>
+		)
+	}
+
 	render() {
 		if ( void 0 === this.matchup ) {
 			return ( <div className="modal"/> );
@@ -135,19 +167,7 @@ export default class MatchupModalComponent extends Component {
 								</div>
 							</div>
 						</div>
-						<div className="modal__videos">
-							<div className="modal__video modal__video--matchupVideo">
-								<div><iframe width="560" height="315" src={this.matchup.mainVideo} frameBorder="0" allowFullScreen></iframe></div>
-							</div>
-							<div className="modal__teamVideos">
-								<div className="modal__video modal__video--teamVideo">
-									<div><iframe width="560" height="315" src={this.matchup.supplementalVideo1} frameBorder="0" allowFullScreen></iframe></div>
-								</div>
-								<div className="modal__video modal__video--teamVideo">
-									<div><iframe width="560" height="315" src={this.matchup.supplementalVideo2} frameBorder="0" allowFullScreen></iframe></div>
-								</div>
-							</div>
-						</div>
+						{this.getVideos()}
 						<div className="modal__matchupArticle" dangerouslySetInnerHTML={html}/>
 					</div>
 				</div>

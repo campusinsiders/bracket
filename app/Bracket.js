@@ -5,7 +5,7 @@
 // Vendor modules.
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { autorun, whyRun } from 'mobx';
+//import { autorun, whyRun } from 'mobx';
 import { Provider } from 'mobx-react';
 
 // Internal modules.
@@ -23,10 +23,10 @@ if ( wp_bracket.hasOwnProperty( 'bracketData' ) ) {
 }
 
 const appStore = window.appStore = new AppStore( 6, serverData );
-autorun(() => {
-	console.log(appStore.activeMatchup)
-	whyRun();
-});
+// autorun(() => {
+// 	console.log(appStore.activeMatchup)
+// 	whyRun();
+// });
 
 //Provide the adviceStore MobX Store to the main BracketComponent and render it.
 window.BracketApp = function() {

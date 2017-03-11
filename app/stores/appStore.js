@@ -93,15 +93,12 @@ export default class AppStore {
 	}
 
 	setupTransmitter() {
-		if ( window.parent ) {
-			//Christiathis.transmitter = window.setInterval( () => { this.transmit( 'update') }, 3000 );
-		}
+		if ( window.parent ) {}
 		return this;
 	}
 
 	receive( event ) {
-		//console.log( 'Editor: ', event );
-		let parsedData = ( 'string' === typeof(event.data) ) ? JSON.parse( event.data ) : event.data;
+		let parsedData = ( 'string' === typeof(event.data) ) ? this.parse( event.data ) : event.data;
 		if ( void 0 !== parsedData && parsedData.hasOwnProperty('id') && 'setting' === parsedData.id ) {
 			let prop = this.parseProp( parsedData.data[0] );
 			if ( this.editor.target ) {
@@ -122,8 +119,6 @@ export default class AppStore {
 		try {
 			return ( void 0 === data ) ? data : JSON.parse( data );
 		} catch ( e ) {
-			console.error( e );
-			console.error( data );
 			return void 0;
 		}
 	}

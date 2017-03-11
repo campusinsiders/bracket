@@ -15,7 +15,10 @@ wp.customize.bind( 'ready', function() {
 
 	// Listen for init on the bracket.
 	window.addEventListener( "message", (event) => {
-		let parsedData = JSON.parse( event.data );
+		let parsedData;
+		try {
+			parsedData = JSON.parse( event.data );
+		} catch ( e ){}
 		if ( void 0 !== parsedData && parsedData.hasOwnProperty('actions') ) {
 			parsedData.actions.map( ( action ) => {
 				//console.log( 'Frame Event: ', event );
