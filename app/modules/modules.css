@@ -1075,7 +1075,7 @@ html {
 	flex-direction: column;
 
 	@media (--width-large) {
-		flex: .5;
+		flex: 1;
 		flex-direction: row;
 	}
 
