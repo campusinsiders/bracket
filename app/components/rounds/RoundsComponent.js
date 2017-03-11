@@ -69,7 +69,7 @@ export default class RoundsComponent extends Component {
 
 	render() {
 		return(
-			<div className="rounds rounds--displayRegionSouth">
+			<div className="rounds rounds--displayRegionTopLeft">
 				{this.rounds()}
 			</div>
 		);

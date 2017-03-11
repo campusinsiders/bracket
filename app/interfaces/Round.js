@@ -81,7 +81,7 @@ export default class RoundInterface {
 	}
 
 	getRegionFirstFour( index ) {
-		const regions = [ 'topRight', 'topLeft', 'bottomRight', 'bottomLeft' ];
+		const regions = [ 'topLeft', 'topRight', 'bottomLeft', 'bottomRight' ];
 		return regions[index];
 	}
 

@@ -9191,11 +9191,11 @@ var Matchup = (_class = function () {
 				case 'South':
 					this.region = 'TopLeft';
 					break;
-				case 'West':
-					this.region = 'TopRight';
-					break;
 				case 'East':
 					this.region = 'BottomLeft';
+					break;
+				case 'West':
+					this.region = 'topRight';
 					break;
 				case 'Midwest':
 					this.region = 'BottomRight';
@@ -17650,7 +17650,7 @@ var RoundsComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_
 		value: function render() {
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
-				{ className: 'rounds rounds--displayRegionSouth' },
+				{ className: 'rounds rounds--displayRegionTopLeft' },
 				this.rounds()
 			);
 		}
@@ -17915,7 +17915,7 @@ var RoundInterface = (_class = function () {
 	}, {
 		key: 'getRegionFirstFour',
 		value: function getRegionFirstFour(index) {
-			var regions = ['topRight', 'topLeft', 'bottomRight', 'bottomLeft'];
+			var regions = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
 			return regions[index];
 		}
 	}, {

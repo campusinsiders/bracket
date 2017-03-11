@@ -112,8 +112,8 @@ html {
 	}
 }
 
-.rounds--displayRegionSouth,
-.rounds--displayRegionWest {
+.rounds--displayRegionTopLeft,
+.rounds--displayRegionBottomLeft {
 
 	& .round--firstRight,
 	& .round--secondRight,
@@ -130,9 +130,9 @@ html {
 	}
 }
 
-.rounds--displayRegionSouth {
+.rounds--displayRegionTopLeft {
 
-	& .matchup:not(.matchup--regionSouth) {
+	& .matchup:not(.matchup--regionTopLeft) {
 		display: none;
 
 		@media (--width-large) {
@@ -141,9 +141,9 @@ html {
 	}
 }
 
-.rounds--displayRegionWest {
+.rounds--displayRegionBottomLeft {
 
-	& .matchup:not(.matchup--regionWest) {
+	& .matchup:not(.matchup--regionBottomLeft) {
 		display: none;
 
 		@media (--width-large) {
@@ -152,8 +152,8 @@ html {
 	}
 }
 
-.rounds--displayRegionEast,
-.rounds--displayRegionMidwest {
+.rounds--displayRegionTopRight,
+.rounds--displayRegionBottomRight {
 
 	& .round--firstLeft,
 	& .round--secondLeft,
@@ -170,9 +170,9 @@ html {
 	}
 }
 
-.rounds--displayRegionEast {
+.rounds--displayRegionTopRight {
 
-	& .matchup:not(.matchup--regionEast) {
+	& .matchup:not(.matchup--regionTopRight) {
 		display: none;
 
 		@media (--width-large) {
@@ -181,9 +181,9 @@ html {
 	}
 }
 
-.rounds--displayRegionMidwest {
+.rounds--displayRegionBottomRight {
 
-	& .matchup:not(.matchup--regionMidwest) {
+	& .matchup:not(.matchup--regionBottomRight) {
 		display: none;
 
 		@media (--width-large) {

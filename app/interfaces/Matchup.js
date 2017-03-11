@@ -64,11 +64,11 @@ export default class Matchup {
 			case 'South':
 				this.region = 'TopLeft';
 				break;
-			case 'West':
-				this.region = 'TopRight';
-				break;
 			case 'East':
 				this.region = 'BottomLeft';
+				break;
+			case 'West':
+				this.region = 'topRight';
 				break;
 			case 'Midwest':
 				this.region = 'BottomRight';

@@ -471,98 +471,98 @@ body.debug *:after {
     padding: 1rem;
     margin-top: 0;
   }
-	}.rounds--displayRegionSouth,
-.rounds--displayRegionWest {
-}.rounds--displayRegionSouth .round--firstRight,
-	.rounds--displayRegionSouth .round--secondRight,
-	.rounds--displayRegionSouth .round--thirdRight,
-	.rounds--displayRegionSouth .round--fourthRight,
-	.rounds--displayRegionSouth .round--fifthLeft,
-	.rounds--displayRegionSouth .round--fifthRight,
-	.rounds--displayRegionSouth .round--sixth,
-	.rounds--displayRegionWest .round--firstRight,
-	.rounds--displayRegionWest .round--secondRight,
-	.rounds--displayRegionWest .round--thirdRight,
-	.rounds--displayRegionWest .round--fourthRight,
-	.rounds--displayRegionWest .round--fifthLeft,
-	.rounds--displayRegionWest .round--fifthRight,
-	.rounds--displayRegionWest .round--sixth{
+	}.rounds--displayRegionTopLeft,
+.rounds--displayRegionBottomLeft {
+}.rounds--displayRegionTopLeft .round--firstRight,
+	.rounds--displayRegionTopLeft .round--secondRight,
+	.rounds--displayRegionTopLeft .round--thirdRight,
+	.rounds--displayRegionTopLeft .round--fourthRight,
+	.rounds--displayRegionTopLeft .round--fifthLeft,
+	.rounds--displayRegionTopLeft .round--fifthRight,
+	.rounds--displayRegionTopLeft .round--sixth,
+	.rounds--displayRegionBottomLeft .round--firstRight,
+	.rounds--displayRegionBottomLeft .round--secondRight,
+	.rounds--displayRegionBottomLeft .round--thirdRight,
+	.rounds--displayRegionBottomLeft .round--fourthRight,
+	.rounds--displayRegionBottomLeft .round--fifthLeft,
+	.rounds--displayRegionBottomLeft .round--fifthRight,
+	.rounds--displayRegionBottomLeft .round--sixth{
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionSouth .round--firstRight,
-	.rounds--displayRegionSouth .round--secondRight,
-	.rounds--displayRegionSouth .round--thirdRight,
-	.rounds--displayRegionSouth .round--fourthRight,
-	.rounds--displayRegionSouth .round--fifthLeft,
-	.rounds--displayRegionSouth .round--fifthRight,
-	.rounds--displayRegionSouth .round--sixth,
-	.rounds--displayRegionWest .round--firstRight,
-	.rounds--displayRegionWest .round--secondRight,
-	.rounds--displayRegionWest .round--thirdRight,
-	.rounds--displayRegionWest .round--fourthRight,
-	.rounds--displayRegionWest .round--fifthLeft,
-	.rounds--displayRegionWest .round--fifthRight,
-	.rounds--displayRegionWest .round--sixth{
+}@media (min-width: 60em){.rounds--displayRegionTopLeft .round--firstRight,
+	.rounds--displayRegionTopLeft .round--secondRight,
+	.rounds--displayRegionTopLeft .round--thirdRight,
+	.rounds--displayRegionTopLeft .round--fourthRight,
+	.rounds--displayRegionTopLeft .round--fifthLeft,
+	.rounds--displayRegionTopLeft .round--fifthRight,
+	.rounds--displayRegionTopLeft .round--sixth,
+	.rounds--displayRegionBottomLeft .round--firstRight,
+	.rounds--displayRegionBottomLeft .round--secondRight,
+	.rounds--displayRegionBottomLeft .round--thirdRight,
+	.rounds--displayRegionBottomLeft .round--fourthRight,
+	.rounds--displayRegionBottomLeft .round--fifthLeft,
+	.rounds--displayRegionBottomLeft .round--fifthRight,
+	.rounds--displayRegionBottomLeft .round--sixth{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
   }
-}.rounds--displayRegionSouth {
-}.rounds--displayRegionSouth .matchup:not(.matchup--regionSouth){
+}.rounds--displayRegionTopLeft {
+}.rounds--displayRegionTopLeft .matchup:not(.matchup--regionTopLeft){
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionSouth .matchup:not(.matchup--regionSouth){
+}@media (min-width: 60em){.rounds--displayRegionTopLeft .matchup:not(.matchup--regionTopLeft){
     display: block;
   }
-}.rounds--displayRegionWest {
-}.rounds--displayRegionWest .matchup:not(.matchup--regionWest){
+}.rounds--displayRegionBottomLeft {
+}.rounds--displayRegionBottomLeft .matchup:not(.matchup--regionBottomLeft){
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionWest .matchup:not(.matchup--regionWest){
+}@media (min-width: 60em){.rounds--displayRegionBottomLeft .matchup:not(.matchup--regionBottomLeft){
     display: block;
   }
-}.rounds--displayRegionEast,
-.rounds--displayRegionMidwest {
-}.rounds--displayRegionEast .round--firstLeft,
-	.rounds--displayRegionEast .round--secondLeft,
-	.rounds--displayRegionEast .round--thirdLeft,
-	.rounds--displayRegionEast .round--fourthLeft,
-	.rounds--displayRegionEast .round--fifthLeft,
-	.rounds--displayRegionEast .round--fifthRight,
-	.rounds--displayRegionEast .round--sixth,
-	.rounds--displayRegionMidwest .round--firstLeft,
-	.rounds--displayRegionMidwest .round--secondLeft,
-	.rounds--displayRegionMidwest .round--thirdLeft,
-	.rounds--displayRegionMidwest .round--fourthLeft,
-	.rounds--displayRegionMidwest .round--fifthLeft,
-	.rounds--displayRegionMidwest .round--fifthRight,
-	.rounds--displayRegionMidwest .round--sixth{
+}.rounds--displayRegionTopRight,
+.rounds--displayRegionBottomRight {
+}.rounds--displayRegionTopRight .round--firstLeft,
+	.rounds--displayRegionTopRight .round--secondLeft,
+	.rounds--displayRegionTopRight .round--thirdLeft,
+	.rounds--displayRegionTopRight .round--fourthLeft,
+	.rounds--displayRegionTopRight .round--fifthLeft,
+	.rounds--displayRegionTopRight .round--fifthRight,
+	.rounds--displayRegionTopRight .round--sixth,
+	.rounds--displayRegionBottomRight .round--firstLeft,
+	.rounds--displayRegionBottomRight .round--secondLeft,
+	.rounds--displayRegionBottomRight .round--thirdLeft,
+	.rounds--displayRegionBottomRight .round--fourthLeft,
+	.rounds--displayRegionBottomRight .round--fifthLeft,
+	.rounds--displayRegionBottomRight .round--fifthRight,
+	.rounds--displayRegionBottomRight .round--sixth{
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionEast .round--firstLeft,
-	.rounds--displayRegionEast .round--secondLeft,
-	.rounds--displayRegionEast .round--thirdLeft,
-	.rounds--displayRegionEast .round--fourthLeft,
-	.rounds--displayRegionEast .round--fifthLeft,
-	.rounds--displayRegionEast .round--fifthRight,
-	.rounds--displayRegionEast .round--sixth,
-	.rounds--displayRegionMidwest .round--firstLeft,
-	.rounds--displayRegionMidwest .round--secondLeft,
-	.rounds--displayRegionMidwest .round--thirdLeft,
-	.rounds--displayRegionMidwest .round--fourthLeft,
-	.rounds--displayRegionMidwest .round--fifthLeft,
-	.rounds--displayRegionMidwest .round--fifthRight,
-	.rounds--displayRegionMidwest .round--sixth{
+}@media (min-width: 60em){.rounds--displayRegionTopRight .round--firstLeft,
+	.rounds--displayRegionTopRight .round--secondLeft,
+	.rounds--displayRegionTopRight .round--thirdLeft,
+	.rounds--displayRegionTopRight .round--fourthLeft,
+	.rounds--displayRegionTopRight .round--fifthLeft,
+	.rounds--displayRegionTopRight .round--fifthRight,
+	.rounds--displayRegionTopRight .round--sixth,
+	.rounds--displayRegionBottomRight .round--firstLeft,
+	.rounds--displayRegionBottomRight .round--secondLeft,
+	.rounds--displayRegionBottomRight .round--thirdLeft,
+	.rounds--displayRegionBottomRight .round--fourthLeft,
+	.rounds--displayRegionBottomRight .round--fifthLeft,
+	.rounds--displayRegionBottomRight .round--fifthRight,
+	.rounds--displayRegionBottomRight .round--sixth{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
   }
-}.rounds--displayRegionEast {
-}.rounds--displayRegionEast .matchup:not(.matchup--regionEast){
+}.rounds--displayRegionTopRight {
+}.rounds--displayRegionTopRight .matchup:not(.matchup--regionTopRight){
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionEast .matchup:not(.matchup--regionEast){
+}@media (min-width: 60em){.rounds--displayRegionTopRight .matchup:not(.matchup--regionTopRight){
     display: block;
   }
-}.rounds--displayRegionMidwest {
-}.rounds--displayRegionMidwest .matchup:not(.matchup--regionMidwest){
+}.rounds--displayRegionBottomRight {
+}.rounds--displayRegionBottomRight .matchup:not(.matchup--regionBottomRight){
   display: none;
-}@media (min-width: 60em){.rounds--displayRegionMidwest .matchup:not(.matchup--regionMidwest){
+}@media (min-width: 60em){.rounds--displayRegionBottomRight .matchup:not(.matchup--regionBottomRight){
     display: block;
   }
 }.rounds--displayFinalFour {
