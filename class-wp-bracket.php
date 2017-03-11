@@ -81,6 +81,7 @@ class WP_Bracket {
 		if ( false !== $options && isset( $options['source_url'] ) ) {
 			$source_url = $options['source_url'];
 		}
+		$source_url = $this->plugin_url . '/dist';
 		wp_register_script( 'bracket-manifest', $source_url . '/manifest.bundle.js', [], false, true );
 		wp_register_script( 'bracket-vendor', $source_url . '/vendor.bundle.js', [ 'bracket-manifest' ], false, true );
 		wp_register_script( 'bracket', $source_url . '/main.bundle.js', [ 'bracket-vendor' ], false, true );
