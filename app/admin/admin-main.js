@@ -17,7 +17,7 @@ wp.customize.bind( 'ready', function() {
 	window.addEventListener( "message", (event) => {
 		let parsedData;
 		try {
-			JSON.parse( event.data );
+			parsedData = JSON.parse( event.data );
 		} catch ( e ){}
 		if ( void 0 !== parsedData && parsedData.hasOwnProperty('actions') ) {
 			parsedData.actions.map( ( action ) => {
