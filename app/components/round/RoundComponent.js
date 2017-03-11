@@ -35,7 +35,7 @@ export default class RoundComponent extends Component {
 		}
 		let quadrants = [];
 		if ( quadrantTop ) {
-			let modifier = ( ( uid % 2 ) === 0) ? 'south' : 'east';
+			let modifier = ( ( uid % 2 ) === 0) ? 'topRight' : 'topLeft';
 			quadrants.push(
 				<div key={0} className={`quadrantLabel quadrantLabel--${modifier}`} onClick={this.onClick.bind(this)}>
 					{quadrantTop}
@@ -44,7 +44,7 @@ export default class RoundComponent extends Component {
 		}
 
 		if ( quadrantBottom ) {
-			let modifier = ( ( uid % 2 ) === 0) ? 'west' : 'midwest';
+			let modifier = ( ( uid % 2 ) === 0) ? 'bottomRight' : 'bottomLeft';
 			quadrants.push(
 				<div key={1} className={`quadrantLabel quadrantLabel--${modifier}`} onClick={this.onClick.bind(this)}>
 					{quadrantBottom}
