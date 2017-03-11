@@ -70,18 +70,18 @@ export default class RoundInterface {
 		}
 		if ( index < ( matches / 2 ) ) {
 			if( this.uid % 2 === 1 ) {
-				return 'South';
+				return 'topRight';
 			}
-			return 'East';
+			return 'bottomRight';
 		}
 		if( this.uid % 2 === 1 ) {
-			return 'West';
+			return 'topLeft';
 		}
-		return 'Midwest';
+		return 'bottomLeft';
 	}
 
 	getRegionFirstFour( index ) {
-		const regions = [ 'South', 'West', 'East', 'Midwest' ];
+		const regions = [ 'topRight', 'topLeft', 'bottomRight', 'bottomLeft' ];
 		return regions[index];
 	}
 
