@@ -9195,7 +9195,7 @@ var Matchup = (_class = function () {
 					this.region = 'BottomLeft';
 					break;
 				case 'West':
-					this.region = 'topRight';
+					this.region = 'TopRight';
 					break;
 				case 'Midwest':
 					this.region = 'BottomRight';
