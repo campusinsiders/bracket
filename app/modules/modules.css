@@ -27,10 +27,6 @@ html {
 	@media (--width-large) {
 		position: static;
 	}
-
-	& > * {
-		flex: 1;
-	}
 }
 
 .header__logo {
@@ -49,6 +45,10 @@ html {
 	color: var(--color-red);
 	font-size: .8em;
 	border-bottom: .15em solid color( var(--color-slate) lightness(90%) );
+}
+
+.header__section {
+	flex: .5;
 }
 
 .header__section--left {
@@ -393,10 +393,11 @@ html {
 	}
 
 	& .matchup {
-		flex-basis: calc( 50% - .25rem );
+		width: calc( 50% - .25rem );
 
 		@media (--width-large) {
 			flex-basis: auto;
+			width: auto;
 		}
 
 		&:nth-child(even) {
