@@ -60,7 +60,7 @@ export default class RoundComponent extends Component {
 				</div>
 				{quadrants}
 				<Matchups matchups={this.round.matchups} round={this.round}/>
-				{promoImage}
+				{promoImage()}
 			</div>
 		);
 	}

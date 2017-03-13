@@ -1238,7 +1238,7 @@ function reaction(expression, effect, arg3) {
     var isScheduled = false;
     var nextValue;
     var r = new Reaction(opts.name, function () {
-        if (firstTime || opts.delay < 1) {
+        if (opts.delay < 1) {
             reactionRunner();
         } else if (!isScheduled) {
             isScheduled = true;
@@ -2499,7 +2499,7 @@ function deepEnhancer(v, _, name) {
     if (isObservable(v)) return v;
     if (Array.isArray(v)) return observable.array(v, name);
     if (isPlainObject(v)) return observable.object(v, name);
-    if (isES6Map(v)) return observable.map(v, name);
+    if (isES6Map(v)) return observable.shallowMap(v, name);
     return v;
 }
 function shallowEnhancer(v, _, name) {
@@ -2531,7 +2531,6 @@ function refStructEnhancer(v, oldValue, name) {
     if (deepEqual(v, oldValue)) return oldValue;
     return v;
 }
-var MAX_SPLICE_SIZE = 10000;
 var safariPrototypeSetterInheritanceBug = function () {
     var v = false;
     var p = {};
@@ -2586,12 +2585,7 @@ var ObservableArrayAdministration = function () {
     ObservableArrayAdministration.prototype.setArrayLength = function (newLength) {
         if (typeof newLength !== "number" || newLength < 0) throw new Error("[mobx.array] Out of range: " + newLength);
         var currentLength = this.values.length;
-        if (newLength === currentLength) return;else if (newLength > currentLength) {
-            var newItems = new Array(newLength - currentLength);
-            for (var i = 0; i < newLength - currentLength; i++) {
-                newItems[i] = undefined;
-            }this.spliceWithArray(currentLength, 0, newItems);
-        } else this.spliceWithArray(newLength, currentLength - newLength);
+        if (newLength === currentLength) return;else if (newLength > currentLength) this.spliceWithArray(currentLength, 0, new Array(newLength - currentLength));else this.spliceWithArray(newLength, currentLength - newLength);
     };
     ObservableArrayAdministration.prototype.updateArrayLength = function (oldLength, delta) {
         if (oldLength !== this.lastKnownLength) throw new Error("[mobx] Modification exception: the internal structure of an observable array was changed. Did you use peek() to change it?");
@@ -2622,18 +2616,9 @@ var ObservableArrayAdministration = function () {
         });
         var lengthDelta = newItems.length - deleteCount;
         this.updateArrayLength(length, lengthDelta);
-        var res = this.spliceItemsIntoValues(index, deleteCount, newItems);
+        var res = (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
         if (deleteCount !== 0 || newItems.length !== 0) this.notifyArraySplice(index, newItems, res);
         return res;
-    };
-    ObservableArrayAdministration.prototype.spliceItemsIntoValues = function (index, deleteCount, newItems) {
-        if (newItems.length < MAX_SPLICE_SIZE) {
-            return (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
-        } else {
-            var res = this.values.slice(index, index + deleteCount);
-            this.values = this.values.slice(0, index).concat(newItems, this.values.slice(index + deleteCount));
-            return res;
-        }
         var _a;
     };
     ObservableArrayAdministration.prototype.notifyArrayChildUpdate = function (index, newValue, oldValue) {
@@ -2752,9 +2737,6 @@ var ObservableArray = function (_super) {
         }
         return this.$mobx.spliceWithArray(index, deleteCount, newItems);
     };
-    ObservableArray.prototype.spliceWithArray = function (index, deleteCount, newItems) {
-        return this.$mobx.spliceWithArray(index, deleteCount, newItems);
-    };
     ObservableArray.prototype.push = function () {
         var items = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -2834,7 +2816,7 @@ var ObservableArray = function (_super) {
 declareIterator(ObservableArray.prototype, function () {
     return arrayAsIterator(this.slice());
 });
-makeNonEnumerable(ObservableArray.prototype, ["constructor", "intercept", "observe", "clear", "concat", "replace", "toJS", "toJSON", "peek", "find", "splice", "spliceWithArray", "push", "pop", "shift", "unshift", "reverse", "sort", "remove", "move", "toString", "toLocaleString"]);
+makeNonEnumerable(ObservableArray.prototype, ["constructor", "intercept", "observe", "clear", "concat", "replace", "toJS", "toJSON", "peek", "find", "splice", "push", "pop", "shift", "unshift", "reverse", "sort", "remove", "move", "toString", "toLocaleString"]);
 Object.defineProperty(ObservableArray.prototype, "length", {
     enumerable: false,
     configurable: true,
@@ -4297,16 +4279,7 @@ module.exports = ReactCurrentOwner;
 			var renderReporter = exports.renderReporter = new _EventEmitter2.default();
 
 			function findDOMNode(component) {
-				if (_reactDom2.default) {
-					try {
-						return _reactDom2.default.findDOMNode(component);
-					} catch (e) {
-						// findDOMNode will throw in react-test-renderer, see:
-						// See https://github.com/mobxjs/mobx-react/issues/216
-						// Is there a better heuristic?
-						return null;
-					}
-				}
+				if (_reactDom2.default) return _reactDom2.default.findDOMNode(component);
 				return null;
 			}
 
@@ -4457,22 +4430,16 @@ module.exports = ReactCurrentOwner;
 
 					var reactiveRender = function reactiveRender() {
 						isRenderingPending = false;
-						var exception = undefined;
 						var rendering = undefined;
 						reaction.track(function () {
 							if (isDevtoolsEnabled) {
 								_this.__$mobRenderStart = Date.now();
 							}
-							try {
-								rendering = _mobx.extras.allowStateChanges(false, baseRender);
-							} catch (e) {
-								exception = e;
-							}
+							rendering = _mobx.extras.allowStateChanges(false, baseRender);
 							if (isDevtoolsEnabled) {
 								_this.__$mobRenderEnd = Date.now();
 							}
 						});
-						if (exception) throw exception;
 						return rendering;
 					};
 
@@ -17546,7 +17513,7 @@ var RoundComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_m
 				),
 				quadrants,
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2____["g" /* Matchups */], { matchups: this.round.matchups, round: this.round }),
-				promoImage
+				promoImage()
 			);
 		}
 	}]);
