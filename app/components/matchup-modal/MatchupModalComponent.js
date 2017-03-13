@@ -45,9 +45,14 @@ export default class MatchupModalComponent extends Component {
 			}
 
 			let nodes2 = document.querySelectorAll('.modal__matchupArticle  .ooyala-video-wrapper');
-			let els2 = Array.prototype.slice.call(nodes);
+			let els2 = Array.prototype.slice.call(nodes2);
 			if ( els2.length ) {
-				els2.map( (el) => { el.previousElementSibling.previousElementSibling.remove(); el.remove() });
+				els2.map( (el) => {
+					if ( el.previousElementSibling && el.previousElementSibling.previousElementSibling ) {
+						el.previousElementSibling.previousElementSibling.remove();
+					}
+					el.remove()
+				});
 			}
 		}, 500 );
 	}
