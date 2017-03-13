@@ -7,6 +7,8 @@ export default class RoundStore {
 
 	uid:Number;
 
+	@observable activeRegion = 'topLeft';
+
 	@computed get rounds() {
 		return this.nodes.filter( (node) => node instanceof RoundInterface );
 	}

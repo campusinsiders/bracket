@@ -26,6 +26,8 @@ export default class MatchupModalComponent extends Component {
 		if ( void 0 === this.matchup || ( ! this.matchup.seat1Team && ! this.matchup.seat2Team ) ) {
 			if ( ! this.props.store.edittingEnabled && '/' !== this.props.router.getCurrentLocation() ) {
 				this.props.router.push( '/' );
+				let bodyTag = document.getElementsByTagName('body')[0];
+				bodyTag.classList.remove('frame--scrollLock');
 				return;
 			}
 		}
@@ -36,10 +38,31 @@ export default class MatchupModalComponent extends Component {
 				postsStore.getPost( this.matchup.articleId ).then( (post) => this.matchup.article = post ? post : this.matchup.article );
 			}
 		}
+
+		window.setTimeout( () =>{
+			let nodes = document.querySelectorAll('.modal__matchupArticle  .ooyala-container');
+			let els = Array.prototype.slice.call(nodes);
+			if ( els.length ) {
+				els.map( (el) => { el.previousSibling.previousSibling.remove(); el.remove() });
+			}
+
+			let nodes2 = document.querySelectorAll('.modal__matchupArticle  .ooyala-video-wrapper');
+			let els2 = Array.prototype.slice.call(nodes2);
+			if ( els2.length ) {
+				els2.map( (el) => {
+					if ( el.previousElementSibling && el.previousElementSibling.previousElementSibling ) {
+						el.previousElementSibling.previousElementSibling.remove();
+					}
+					el.remove()
+				});
+			}
+		}, 500 );
 	}
 
 	componentWillUnmount() {
 		this.props.store.setActiveMatchup( void 0 );
+		let bodyTag = document.getElementsByTagName('body')[0];
+		bodyTag.classList.remove('frame--scrollLock');
 	}
 
 	componentWillReact() {
@@ -54,6 +77,13 @@ export default class MatchupModalComponent extends Component {
 					this.matchup.loading = false;
 				});
 			}
+		}
+	}
+
+	componentDidMount() {
+		if ( void 0 !== this.matchup ) {
+			let bodyTag = document.getElementsByTagName('body')[0];
+			bodyTag.classList.add('frame--scrollLock');
 		}
 	}
 
@@ -113,6 +143,8 @@ export default class MatchupModalComponent extends Component {
 
 	render() {
 		if ( void 0 === this.matchup ) {
+			let bodyTag = document.getElementsByTagName('body')[0];
+			bodyTag.classList.remove('frame--scrollLock');
 			return ( <div className="modal"/> );
 		}
 

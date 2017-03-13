@@ -67,9 +67,17 @@ export default class RoundsComponent extends Component {
 		return rounds;
 	}
 
+	getClassName() {
+		let className = 'rounds';
+		const { activeRegion } = this.props.store.roundStore;
+		let prepend = ( 'finalFour' === activeRegion ) ? '' : 'Region';
+		let display = ' rounds--display' + prepend;
+		return className.concat( display ).concat( activeRegion.toUpperCase().slice(0,1).concat( activeRegion.slice (1) ) );
+	}
+
 	render() {
 		return(
-			<div className="rounds rounds--displayRegionTopLeft">
+			<div className={this.getClassName()}>
 				{this.rounds()}
 			</div>
 		);
