@@ -26,6 +26,8 @@ export default class MatchupModalComponent extends Component {
 		if ( void 0 === this.matchup || ( ! this.matchup.seat1Team && ! this.matchup.seat2Team ) ) {
 			if ( ! this.props.store.edittingEnabled && '/' !== this.props.router.getCurrentLocation() ) {
 				this.props.router.push( '/' );
+				let bodyTag = document.getElementsByTagName('body')[0];
+				bodyTag.classList.remove('frame--scrollLock');
 				return;
 			}
 		}
@@ -59,6 +61,8 @@ export default class MatchupModalComponent extends Component {
 
 	componentWillUnmount() {
 		this.props.store.setActiveMatchup( void 0 );
+		let bodyTag = document.getElementsByTagName('body')[0];
+		bodyTag.classList.remove('frame--scrollLock');
 	}
 
 	componentWillReact() {
@@ -77,7 +81,10 @@ export default class MatchupModalComponent extends Component {
 	}
 
 	componentDidMount() {
-
+		if ( void 0 !== this.matchup ) {
+			let bodyTag = document.getElementsByTagName('body')[0];
+			bodyTag.classList.add('frame--scrollLock');
+		}
 	}
 
 	getSponsor() {
@@ -136,6 +143,8 @@ export default class MatchupModalComponent extends Component {
 
 	render() {
 		if ( void 0 === this.matchup ) {
+			let bodyTag = document.getElementsByTagName('body')[0];
+			bodyTag.classList.remove('frame--scrollLock');
 			return ( <div className="modal"/> );
 		}
 

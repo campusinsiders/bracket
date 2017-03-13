@@ -16732,6 +16732,8 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 			if (void 0 === this.matchup || !this.matchup.seat1Team && !this.matchup.seat2Team) {
 				if (!this.props.store.edittingEnabled && '/' !== this.props.router.getCurrentLocation()) {
 					this.props.router.push('/');
+					var bodyTag = document.getElementsByTagName('body')[0];
+					bodyTag.classList.remove('frame--scrollLock');
 					return;
 				}
 			}
@@ -16770,6 +16772,8 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
 			this.props.store.setActiveMatchup(void 0);
+			var bodyTag = document.getElementsByTagName('body')[0];
+			bodyTag.classList.remove('frame--scrollLock');
 		}
 	}, {
 		key: 'componentWillReact',
@@ -16797,7 +16801,12 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 		}
 	}, {
 		key: 'componentDidMount',
-		value: function componentDidMount() {}
+		value: function componentDidMount() {
+			if (void 0 !== this.matchup) {
+				var bodyTag = document.getElementsByTagName('body')[0];
+				bodyTag.classList.add('frame--scrollLock');
+			}
+		}
 	}, {
 		key: 'getSponsor',
 		value: function getSponsor() {
@@ -16882,6 +16891,8 @@ var MatchupModalComponent = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MOD
 		key: 'render',
 		value: function render() {
 			if (void 0 === this.matchup) {
+				var bodyTag = document.getElementsByTagName('body')[0];
+				bodyTag.classList.remove('frame--scrollLock');
 				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'modal' });
 			}
 
