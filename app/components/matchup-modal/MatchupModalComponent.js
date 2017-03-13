@@ -43,6 +43,12 @@ export default class MatchupModalComponent extends Component {
 			if ( els.length ) {
 				els.map( (el) => { el.previousSibling.previousSibling.remove(); el.remove() });
 			}
+
+			let nodes2 = document.querySelectorAll('.modal__matchupArticle  .ooyala-video-wrapper');
+			let els2 = Array.prototype.slice.call(nodes);
+			if ( els2.length ) {
+				els2.map( (el) => { el.previousElementSibling.previousElementSibling.remove(); el.remove() });
+			}
 		}, 500 );
 	}
 
