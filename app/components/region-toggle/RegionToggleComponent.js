@@ -31,7 +31,7 @@ export default class RegionToggleComponent extends Component {
 			);
 		}
 		let ffClassName = 'regionToggle__region ';
-		ffClassName = ( 'finalFour' === key ) ? className.concat('regionToggle__region--active') : ffClassName;
+		ffClassName = ( 'finalFour' === activeRegion ) ? ffClassName.concat('regionToggle__region--active') : ffClassName;
 		regions.push( <div key="finalFour" onClick={this.regionToggle.bind(this, 'finalFour')} className={ffClassName}>Final 4</div> );
 		return regions;
 	}
