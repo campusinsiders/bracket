@@ -36,6 +36,14 @@ export default class MatchupModalComponent extends Component {
 				postsStore.getPost( this.matchup.articleId ).then( (post) => this.matchup.article = post ? post : this.matchup.article );
 			}
 		}
+
+		window.setTimeout( () =>{
+			let nodes = document.querySelectorAll('.modal__matchupArticle  .ooyala-container');
+			let els = Array.prototype.slice.call(nodes);
+			if ( els.length ) {
+				els.map( (el) => { el.previousSibling.previousSibling.remove(); el.remove() });
+			}
+		}, 500 );
 	}
 
 	componentWillUnmount() {
@@ -58,9 +66,7 @@ export default class MatchupModalComponent extends Component {
 	}
 
 	componentDidMount() {
-		let nodes = document.querySelectorAll('.modal__matchupArticle  .ooyala-container');
-		let els = Array.prototype.slice.call(nodes);
-		els.map( (el) => { console.log( el ); el.previousSibling.previousSibling.remove(); el.remove() });
+
 	}
 
 	getSponsor() {
