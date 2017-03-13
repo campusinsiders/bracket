@@ -3,34 +3,6 @@ const modules = require('./modules/modules.css');
 if ( document.querySelectorAll('body.react').length ) {
 	// Require the Bracket.
 	require( './Bracket');
-	var regionToggles = document.getElementsByClassName('regionToggle__region');
-
-	for (var i = regionToggles.length - 1; i >= 0; i--) {
-		regionToggles[i].addEventListener('click', regionToggle);
-	}
-
-	function regionToggle(event) {
-		console.log(event);
-
-		var activeRegionToggle = document.getElementsByClassName('regionToggle__region--active')[0];
-		activeRegionToggle.classList.remove('regionToggle__region--active');;
-
-		var regionToggle = event.target;
-		var newRegion = regionToggle.getAttribute('data-region');
-
-		regionToggle.classList.add('regionToggle__region--active');
-
-		var rounds = document.getElementsByClassName('rounds')[0];
-
-		if ( newRegion == 'finalFour' )
-			var ifRegion = '';
-		else
-			var ifRegion = 'Region';
-
-		rounds.classList = 'rounds';
-		rounds.classList.add('rounds--display' + ifRegion + capitalizeFirstLetter(newRegion));
-	}
-
 
 	function capitalizeFirstLetter(string) {
 		return string[0].toUpperCase() + string.slice(1);

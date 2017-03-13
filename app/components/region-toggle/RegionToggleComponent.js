@@ -21,16 +21,21 @@ export default class RegionToggleComponent extends Component {
 
 	getRegions() {
 		this.setRegions();
+		const { activeRegion } = this.props.store.roundStore;
 		let regions = [];
 		for ( let [ key, value ] of this.regionLabels.entries() ) {
 			let className = 'regionToggle__region ';
-			className = ( 'topLeft' === key ) ? className.concat('regionToggle__region--active') : className;
+			className = ( activeRegion === key ) ? className.concat('regionToggle__region--active') : className;
 			regions.push(
-				<div key={key} data-region={key} className={className}>{value}</div>
+				<div key={key} onClick={this.regionToggle.bind(this, key)} className={className}>{value}</div>
 			);
 		}
-		regions.push( <div key="finalFour" data-region="finalFour" className="regionToggle__region">Final 4</div> );
+		regions.push( <div key="finalFour" onClick={this.regionToggle.bind(this, 'finalFour')} className="regionToggle__region">Final 4</div> );
 		return regions;
+	}
+
+	regionToggle(region) {
+		this.props.store.roundStore.activeRegion = region;
 	}
 
 	render() {
