@@ -4,18 +4,24 @@ import { inject, observer } from 'mobx-react';
 // Internal.
 import BracketComponent from './BracketComponent';
 
-if ( window.hasOwnProperty( '_gaq' ) && _gaq.hasOwnProperty('push') ) {
-	hashHistory.listen((location) => {
-		_gaq.push(['_trackPageview', location.pathname]);
-	} );
-} else {
-	console.warn( 'Google analytics is not configured, pageviews will not be sent to analytics!' );
-}
 /**
  * React Component: BracketComponent
  */
 @inject('store') @observer
 export default class BracketPageComponent extends Component {
+	gaInterval;
+
+	componentWillMount() {
+		this.gaInterval = window.setInterval( () => {
+			if ( window.hasOwnProperty( '_gaq' ) && 'function' === typeof( _gaq.push ) ) {
+				hashHistory.listen((location) => {
+					_gaq.push(['_trackPageview', location.pathname]);
+				} );
+				window.clearInterval( this.gaInterval );
+			}
+		}, 100 );
+	}
+
 	render() {
 		return(
 			<div className="bracket__wrap">
