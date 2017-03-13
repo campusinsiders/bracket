@@ -57,6 +57,12 @@ export default class MatchupModalComponent extends Component {
 		}
 	}
 
+	componentDidMount() {
+		let nodes = document.querySelectorAll('.modal__matchupArticle  .ooyala-container');
+		let els = Array.prototype.slice.call(nodes);
+		els.map( (el) => { console.log( el ); el.previousSibling.previousSibling.remove(); el.remove() });
+	}
+
 	getSponsor() {
 		const round = this.props.store.getRoundById( this.matchup.roundId );
 
